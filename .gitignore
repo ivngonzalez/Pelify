@@ -17,3 +17,8 @@ frontend/.env
 .env
 .idea/
 .vscode/
+
+postgres_data/
+target/
+node_modules/
+.env
