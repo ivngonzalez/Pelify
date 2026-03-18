@@ -1,4 +1,9 @@
 # Pelify 
+[![Java](https://img.shields.io/badge/Code-Java_17-orange?style=flat-square&logo=openjdk&logoColor=white)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Code-Spring_Boot_3-brightgreen?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/Code-React-blue?style=flat-square&logo=react&logoColor=white)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/DB-PostgreSQL-blue?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+![Last Commit](https://img.shields.io/badge/last_commit-march_2026-important?style=flat-square)
 
 **Pelify** es una plataforma web de recomendación de cine y administración de usuarios diseñada para solucionar la indecisión al elegir contenido audiovisual. La aplicación ofrece sugerencias personalizadas basadas en criterios específicos y facilita el descubrimiento de nuevos lanzamientos.
 
