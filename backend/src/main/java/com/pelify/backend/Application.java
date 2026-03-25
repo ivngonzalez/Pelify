@@ -6,23 +6,26 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
-
 	public static void main(String[] args) {
-		// Esto intenta cargar el .env. Si no lo encuentra, no pasa nada (ignoreIfMissing)
+		// Intentamos cargar desde la raíz del proyecto (Pelify/)
 		Dotenv dotenv = Dotenv.configure()
-				.directory("./backend") // <--- Asegúrate de que apunte a la carpeta del backend
+				.directory("../")
 				.ignoreIfMissing()
 				.load();
 
-		String password = dotenv.get("DB_PASSWORD");
+		// Si no lo encuentra arriba, probamos en la carpeta actual (Pelify/backend/)
+		if (dotenv.get("DB_URL") == null) {
+			dotenv = Dotenv.configure()
+					.directory("./")
+					.ignoreIfMissing()
+					.load();
+		}
 
-		if (password != null) {
-			System.setProperty("DB_PASSWORD", password);
-		} else {
-			// Si sigue fallando, es que no lee el archivo.
-			// Como medida de emergencia para probar, puedes ponerla aquí:
-			// System.setProperty("DB_PASSWORD", "tu_password_real");
-			System.out.println("OJO: No se ha encontrado la variable DB_PASSWORD en el .env");
+		// Inyectamos las variables SOLO si existen
+		if (dotenv.get("DB_URL") != null) {
+			System.setProperty("DB_URL", dotenv.get("DB_URL"));
+			System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
+			System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 		}
 
 		SpringApplication.run(Application.class, args);
