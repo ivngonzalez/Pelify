@@ -1,0 +1,68 @@
+.nav-pelify {
+    background-color: var(--fondo) !important;
+    color: var(--texto) !important;
+    padding: 40px 40px 12px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--acento) !important;
+}
+
+.nav-pelify .container-fluid {
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+}
+
+.logo-pelify {
+    color: var(--acento) !important;
+    font-weight: 700;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.logo-pelify img {
+    height: 32px; 
+    width: auto;
+}
+
+.enlace-nav {
+    color: var(--texto) !important;
+    font-size: 14px;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+.enlace-nav:hover {
+    color: var(--acento) !important;
+}
+
+.avatar-pelify {
+    background-color: var(--acento) !important;
+    color: var(--fondo) !important; 
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.avatar-pelify svg {
+    font-size: 16px;
+    display: block;
+}
+
+.avatar-pelify:hover {
+    transform: scale(1.1);
+}
+
+.nav-pelify .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+@media (min-width: 992px) {
+    .nav-pelify {
+        padding: 12px 40px;
+    }
+}

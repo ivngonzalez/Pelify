@@ -1,0 +1,72 @@
+.footer-pelify {
+    background-color: var(--fondo);
+    border-top: 2px solid var(--acento);
+    padding: 40px 40px 20px;
+    color: var(--texto-secundario);
+}
+
+.footer-pelify .container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.footer-logo {
+    color: var(--acento);
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.footer-tagline {
+    font-size: 13px;
+    color: var(--texto-secundario);
+    margin-bottom: 0;
+}
+
+.footer-col-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--texto);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.footer-link {
+    display: block;
+    font-size: 13px;
+    color: var(--texto-secundario);
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--acento);
+}
+
+.footer-divider {
+    border-color: #32353F;
+    margin: 28px 0 16px;
+}
+
+.footer-bottom {
+    font-size: 12px;
+    color: var(--texto-secundario);
+}
+
+.footer-bottom span {
+    color: var(--acento);
+}
+
+@media (max-width: 768px) {
+    .footer-pelify {
+        padding: 32px 16px 20px;
+    }
+
+    .footer-col {
+        margin-bottom: 28px;
+    }
+}
