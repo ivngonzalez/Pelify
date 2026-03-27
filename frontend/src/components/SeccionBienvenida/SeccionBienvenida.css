@@ -1,0 +1,130 @@
+.bienvenida-seccion {
+    padding: 120px 0 100px;
+    background-color: #0d0d0d;
+    background-size: cover;
+    background-position: center;
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    /* Gradiente por defecto más interesante que el negro puro */
+    background-image: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+}
+
+/* Animación de carga tipo skeleton para cuando no hay imagen */
+.bienvenida-seccion:not(.con-fondo)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05),
+        transparent
+    );
+    animation: skeleton-loading 2s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.bienvenida-seccion.con-fondo {
+    padding-top: 150px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+}
+
+.bienvenida-tag {
+    color: var(--acento);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 12px;
+    display: inline-block;
+    background: rgba(var(--acento-rgb, 255, 193, 7), 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.bienvenida-titulo {
+    font-size: 64px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.marca-pelify {
+    color: var(--acento);
+}
+
+.bienvenida-subtitulo {
+    font-size: 18px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+...
+.bienvenida-boton-accion {
+    background-color: var(--acento) !important;
+    border: none !important;
+    color: black !important;
+    padding: 14px 32px;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: transform 0.2s ease;
+}
+
+.bienvenida-boton-accion:hover {
+    transform: scale(1.05);
+    background-color: white !important;
+}
+
+.bienvenida-boton-secundario {
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    padding: 14px 32px !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}
+
+@media (max-width: 992px) {
+    .bienvenida-titulo {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 768px) {
+    .bienvenida-seccion {
+        padding: 80px 0 60px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .bienvenida-subtitulo {
+        margin: 0 auto 30px;
+    }
+
+    .d-flex.gap-3 {
+        justify-content: center;
+    }
+
+    .bienvenida-titulo {
+        font-size: 38px;
+    }
+}
