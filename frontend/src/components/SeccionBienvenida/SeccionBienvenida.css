@@ -79,7 +79,7 @@
     margin-bottom: 30px;
     text-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
-...
+
 .bienvenida-boton-accion {
     background-color: var(--acento) !important;
     border: none !important;
