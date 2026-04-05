@@ -1,40 +1,40 @@
-.nav-pelify {
-    background-color: var(--fondo) !important;
+.nav-principal {
+    background-color: var(--fondo-claro) !important;
     color: var(--texto) !important;
     padding: 40px 40px 12px;
     font-size: 13px;
     border-bottom: 1px solid var(--acento) !important;
 }
 
-.nav-pelify .container-fluid {
+.nav-principal .container-fluid {
     padding-left: 40px !important;
     padding-right: 40px !important;
 }
 
-.logo-pelify {
+.nav-logo {
     color: var(--acento) !important;
     font-weight: 700;
     font-size: 20px;
     text-decoration: none;
 }
 
-.logo-pelify img {
+.nav-logo img {
     height: 32px; 
     width: auto;
 }
 
-.enlace-nav {
+.nav-enlace {
     color: var(--texto) !important;
     font-size: 14px;
     margin: 0 15px;
     text-decoration: none;
 }
 
-.enlace-nav:hover {
+.nav-enlace:hover {
     color: var(--acento) !important;
 }
 
-.avatar-pelify {
+.nav-avatar {
     background-color: var(--acento) !important;
     color: var(--fondo) !important; 
     width: 35px;
@@ -48,21 +48,21 @@
     transition: transform 0.2s ease;
 }
 
-.avatar-pelify svg {
+.nav-avatar svg {
     font-size: 16px;
     display: block;
 }
 
-.avatar-pelify:hover {
+.nav-avatar:hover {
     transform: scale(1.1);
 }
 
-.nav-pelify .navbar-toggler-icon {
+.nav-principal .navbar-toggler-icon {
     filter: invert(1);
 }
 
 @media (min-width: 992px) {
-    .nav-pelify {
+    .nav-principal {
         padding: 12px 40px;
     }
 }

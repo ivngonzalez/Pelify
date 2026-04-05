@@ -7,10 +7,9 @@ import logo from '../../assets/logo-pelify.png';
 
 const Navegacion = () => {
   return (
-    <Navbar expand="lg" className="nav-pelify">
+    <Navbar expand="lg" className="nav-principal">
       <Container fluid>
-        <Navbar.Brand href="/" className="logo-pelify d-flex align-items-center">
-          {/* Añadimos la imagen aquí */}
+        <Navbar.Brand href="/" className="nav-logo d-flex align-items-center">
           <img
             src={logo}
             alt="Pelify Logo"
@@ -22,19 +21,19 @@ const Navegacion = () => {
         </Navbar.Brand>
 
         <div className="d-flex align-items-center d-lg-none">
-          <div className="avatar-pelify me-2">
+          <div className="nav-avatar me-2">
             <FontAwesomeIcon icon={faUser} />
           </div>
-          <Navbar.Toggle aria-controls="nav-pelify-content" className="border-0 shadow-none" />
+          <Navbar.Toggle aria-controls="nav-contenido-principal" className="border-0 shadow-none" />
         </div>
 
-        <Navbar.Collapse id="nav-pelify-content">
+        <Navbar.Collapse id="nav-contenido-principal">
           <Nav className="ms-auto align-items-center">
-            <Nav.Link href="/" className="enlace-nav">Inicio</Nav.Link>
-            <Nav.Link href="#explorar" className="enlace-nav">Explorar</Nav.Link>
-            <Nav.Link href="#mi-lista" className="enlace-nav">Mi lista</Nav.Link>
+            <Nav.Link href="/" className="nav-enlace">Inicio</Nav.Link>
+            <Nav.Link href="#explorar" className="nav-enlace">Explorar</Nav.Link>
+            <Nav.Link href="#mi-lista" className="nav-enlace">Mi lista</Nav.Link>
 
-            <div className="avatar-pelify ms-lg-3 d-none d-lg-flex">
+            <div className="nav-avatar ms-lg-3 d-none d-lg-flex">
               <FontAwesomeIcon icon={faUser} />
             </div>
           </Nav>
