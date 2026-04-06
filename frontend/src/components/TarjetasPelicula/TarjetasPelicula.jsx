@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from 'react';
+import { Container } from 'react-bootstrap';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
 const TarjetasPelicula = ({ titulo, fetchFunction }) => {
   const [peliculas, setPeliculas] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     if (fetchFunction) {
@@ -16,9 +18,17 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
     }
   }, [fetchFunction]);
 
+  const scroll = (direction) => {
+    const { current } = scrollRef;
+    if (current) {
+      const scrollAmount = direction === 'left' ? -600 : 600;
+      current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   if (cargando) return (
     <section className="tarjetas-seccion">
-      <Container>
+      <Container fluid>
         <p className="tarjetas-label">{titulo || 'Sugerencias para ti'}</p>
         <p className="tarjetas-cargando">Cargando películas...</p>
       </Container>
@@ -27,11 +37,20 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
 
   return (
     <section className="tarjetas-seccion">
-      <Container>
+      <Container fluid className="position-relative slider-wrapper">
         <p className="tarjetas-label">{titulo}</p>
-        <Row>
+        
+        <button 
+          className="slider-control left" 
+          onClick={() => scroll('left')}
+          aria-label="Desplazar a la izquierda"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <div className="tarjetas-container-horizontal" ref={scrollRef}>
           {peliculas.map(pelicula => (
-            <Col key={pelicula.id} xs={12} sm={6} lg={3} className="mb-3">
+            <div key={pelicula.id} className="tarjeta-wrapper">
               <div className="tarjeta">
                 <div className="tarjeta-imagen">
                   {pelicula.poster_path
@@ -54,9 +73,17 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
                   <button className="tarjeta-boton">+ Mi lista</button>
                 </div>
               </div>
-            </Col>
+            </div>
           ))}
-        </Row>
+        </div>
+
+        <button 
+          className="slider-control right" 
+          onClick={() => scroll('right')}
+          aria-label="Desplazar a la derecha"
+        >
+          <ChevronRight size={24} />
+        </button>
       </Container>
     </section>
   );

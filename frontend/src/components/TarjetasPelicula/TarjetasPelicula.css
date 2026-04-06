@@ -1,3 +1,44 @@
+.slider-wrapper {
+    position: relative;
+    padding: 0 40px !important; /* Spacing for buttons */
+}
+
+.slider-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 40px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    border-radius: 4px;
+}
+
+.slider-wrapper:hover .slider-control {
+    opacity: 1;
+}
+
+.slider-control:hover {
+    background: var(--acento);
+    color: var(--fondo);
+}
+
+.slider-control.left {
+    left: 10px;
+}
+
+.slider-control.right {
+    right: 10px;
+}
+
 .tarjetas-seccion {
     padding: 20px 0 40px;
     background-color: var(--fondo);
@@ -17,17 +58,48 @@
     font-size: 13px;
 }
 
+.tarjetas-container-horizontal {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0 25px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar */
+.tarjetas-container-horizontal::-webkit-scrollbar {
+    display: none;
+}
+
+.tarjetas-container-horizontal {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tarjeta-wrapper {
+    flex: 0 0 220px;
+}
+
 .tarjeta {
     background-color: var(--fondo-claro);
     border: 1px solid #3a3d47;
     border-radius: 8px;
     overflow: hidden;
     height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.tarjeta:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-color: var(--acento);
 }
 
 .tarjeta-imagen {
     position: relative;
-    height: 200px;
+    height: 310px;
+    overflow: hidden;
 }
 
 .tarjeta-poster {
@@ -35,6 +107,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.5s ease;
+}
+
+.tarjeta:hover .tarjeta-poster {
+    transform: scale(1.1);
 }
 
 .tarjeta-sin-imagen {
@@ -93,7 +170,16 @@
 }
 
 @media (max-width: 768px) {
+    .slider-wrapper {
+        padding: 0 15px !important;
+    }
+    .slider-control {
+        display: none; /* Hide on mobile since they use touch */
+    }
+    .tarjeta-wrapper {
+        flex: 0 0 170px;
+    }
     .tarjeta-imagen {
-        height: 240px;
+        height: 250px;
     }
 }

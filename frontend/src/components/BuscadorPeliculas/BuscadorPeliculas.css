@@ -62,11 +62,15 @@
     border-radius: 6px;
     transition: opacity 0.2s ease;
     margin-top: 4px;
+    cursor: pointer;
 }
 
 .buscador-boton:hover {
     opacity: 0.85;
-    background-color: var(--acento) !important;
+}
+
+.buscador-boton:active {
+    opacity: 1;
 }
 
 @media (max-width: 768px) {
