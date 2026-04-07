@@ -1,0 +1,33 @@
+.card-perfil {
+    background-color: var(--fondo); /* Usando tu color oscuro de global.css */
+    border-radius: 15px;
+    border: 1px solid var(--fondo-claro);
+    color: var(--texto);
+}
+
+.text-acento {
+    color: var(--acento) !important; /* El amarillo de tu proyecto */
+}
+
+.avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: var(--acento);
+    color: var(--fondo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.btn-outline-acento {
+    color: var(--acento);
+    border-color: var(--acento);
+}
+
+.btn-outline-acento:hover {
+    background-color: var(--acento);
+    color: var(--fondo);
+}
