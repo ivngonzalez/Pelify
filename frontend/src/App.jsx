@@ -27,24 +27,41 @@ function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navegacion />
-      <main>
+      
+      <main className="flex-grow-1">
         <Routes>
-          {/* RUTA INICIO: Todo el contenido de películas */}
+          {/* VISTA DE INICIO */}
           <Route path="/" element={
             <>
               <SeccionBienvenida pelicula={peliculaDestacada} />
               <BuscadorPeliculas />
-              <TarjetasPelicula titulo="Peliculas Populares" fetchFunction={getPeliculasPopulares} />
-              <TarjetasPelicula titulo="Próximos Lanzamientos" fetchFunction={getProximosLanzamientos} />
-              <TarjetasPelicula titulo="Tendencias de la Semana" fetchFunction={getTendenciasSemana} />
-              <TarjetasPelicula titulo="Mejor Valoradas" fetchFunction={getMejorValoradas} />
+              
+              <TarjetasPelicula 
+                titulo="Películas Populares" 
+                fetchFunction={getPeliculasPopulares} 
+              />
+              <TarjetasPelicula 
+                titulo="Próximos Lanzamientos" 
+                fetchFunction={getProximosLanzamientos} 
+              />
+              <TarjetasPelicula 
+                titulo="Tendencias de la Semana" 
+                fetchFunction={getTendenciasSemana} 
+              />
+              <TarjetasPelicula 
+                titulo="Mejor Valoradas" 
+                fetchFunction={getMejorValoradas} 
+              />
             </>
           } />
 
-          {/* RUTA PERFIL: Solo el componente Perfil */}
+          {/* VISTA DE PERFIL */}
           <Route path="/perfil" element={<Perfil />} />
+          
+          {/* Puedes agregar una ruta para "No encontrado" aquí */}
         </Routes>
       </main>
+
       <Footer />
     </div>
   );
