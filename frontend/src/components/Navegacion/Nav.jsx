@@ -21,6 +21,7 @@ const Navegacion = () => {
           Pelify
         </Navbar.Brand>
 
+        {/* Avatar para móviles */}
         <div className="d-flex align-items-center d-lg-none">
           <Link to="/perfil" className="nav-avatar me-2 text-decoration-none text-white">
             <FontAwesomeIcon icon={faUser} />
