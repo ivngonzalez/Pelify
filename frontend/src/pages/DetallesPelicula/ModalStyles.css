@@ -1,0 +1,16 @@
+.modal-header {
+    border-bottom: 1px solid var(--fondo-claro) !important;
+}
+
+.modal-title {
+    color: var(--texto);
+}
+
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%); 
+}
+
+.modal-content {
+    background-color: var(--fondo) !important;
+    border: 1px solid var(--fondo-claro);
+}

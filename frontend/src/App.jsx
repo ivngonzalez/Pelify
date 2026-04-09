@@ -5,7 +5,8 @@ import Footer from './components/Footer/Footer';
 import SeccionBienvenida from './components/SeccionBienvenida/SeccionBienvenida';
 import BuscadorPeliculas from './components/BuscadorPeliculas/BuscadorPeliculas';
 import TarjetasPelicula from './components/TarjetasPelicula/TarjetasPelicula';
-import Perfil from './components/Perfil/Perfil';
+import Perfil from './pages/Perfil/Perfil';
+import DetallesPelicula from './pages/DetallesPelicula/DetallesPelicula';
 import { 
   getPeliculasPopulares, 
   getProximosLanzamientos, 
@@ -57,7 +58,10 @@ function App() {
 
           {/* VISTA DE PERFIL */}
           <Route path="/perfil" element={<Perfil />} />
-          
+
+          {/* VISTA DE DETALLE DE PELÍCULA */}
+          <Route path="/pelicula/:id" element={<DetallesPelicula />} />
+
           {/* Puedes agregar una ruta para "No encontrado" aquí */}
         </Routes>
       </main>

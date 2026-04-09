@@ -2,9 +2,11 @@
 
 :root {
     --fondo: #272932;
+    --fondo-rgb: 39, 41, 50; /* RGB values for --fondo */
     --fondo-claro: #32353F;
     --acento: #D7CF07;
     --texto: #E7E7E7;
+    --texto-rgb: 231, 231, 231; /* RGB values for --texto */
     --texto-secundario: #919191;
 }
 

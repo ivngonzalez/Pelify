@@ -1,0 +1,314 @@
+.detalles-pelicula-page {
+    color: var(--texto);
+    background-color: var(--fondo);
+    min-height: 100vh;
+    padding-top: 70px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.status-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.backdrop-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70vh; 
+    background-size: cover;
+    background-position: center 20%;
+    z-index: 0;
+}
+
+.backdrop-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        linear-gradient(to right, 
+            var(--fondo) 10%, 
+            rgba(var(--fondo-rgb), 0.8) 30%, 
+            transparent 100%
+        ),
+        linear-gradient(to top, 
+            var(--fondo) 0%, 
+            transparent 50%
+        );
+}
+
+/* CONTENIDO PRINCIPAL */
+.detalles-pelicula-content {
+    position: relative;
+    z-index: 10; 
+    padding: 2rem 5%;
+}
+
+.volver-link {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.volver-link:hover { color: var(--acento); }
+
+.detalles-main-row {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.detalles-poster {
+    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    flex-shrink: 0;
+}
+
+.info-principal { flex: 1; }
+
+.movie-title-main {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.movie-meta-line {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    color: var(--texto-secundario);
+    margin-bottom: 1.5rem;
+}
+
+.rating { color: var(--acento); font-weight: bold; font-size: 1.1rem; }
+
+.genre-badges { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.genre-badge {
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.sinopsis-section h5 {
+    border-bottom: 3px solid var(--acento);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 1rem;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 2rem;
+}
+
+.btn-trailer-main {
+    background: transparent;
+    color: var(--acento); /* Use accent color for text */
+    border: 2px solid var(--acento); /* Use accent color for border */
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-trailer-main:hover {
+    background-color: var(--acento); /* Fill with accent color on hover */
+    color: var(--fondo); /* Change text to background color on hover */
+    border-color: var(--acento); /* Keep accent border */
+}
+
+.btn-mi-lista {
+    background: transparent;
+    color: var(--texto); /* Use primary text color */
+    border: 2px solid var(--texto); /* Use primary text color for border */
+    padding: 12px 25px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-mi-lista:hover {
+    background-color: rgba(var(--texto-rgb), 0.1); /* Subtle background on hover */
+    border-color: var(--texto); /* Keep text color for border on hover */
+    color: var(--texto); /* Keep text color on hover */
+}
+
+.reparto-section {
+    position: relative;
+    z-index: 10;
+    padding: 3rem 5%;
+}
+
+.reparto-section h4 {
+    margin-bottom: 1.5rem;
+}
+
+.slider-wrapper {
+    position: relative;
+    padding: 0 40px; 
+}
+
+.slider-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 40px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    border-radius: 4px;
+}
+
+.slider-wrapper:hover .slider-control {
+    opacity: 1;
+}
+
+.slider-control:hover {
+    background: var(--acento);
+    color: var(--fondo);
+}
+
+.slider-control.left {
+    left: 0;
+}
+
+.slider-control.right {
+    right: 0;
+}
+
+.reparto-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px 0 25px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.reparto-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.reparto-grid {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.actor-card {
+    background: var(--fondo-claro); 
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    flex: 0 0 160px; 
+    transition: transform 0.3s ease; 
+    border: 1px solid transparent; 
+}
+
+.actor-card:hover {
+    transform: translateY(-5px);
+    border: 1px solid var(--acento); 
+}
+
+
+.actor-foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.actor-initial-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--fondo);
+    color: var(--acento);
+    display: flex;
+    align-items: center;       
+    justify-content: center;   
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0 auto 10px auto;  
+}
+
+.actor-initial-placeholder .initial-text {
+    line-height: 0; 
+}
+.actor-personaje { font-size: 0.8rem; color: var(--acento); }
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .detalles-main-row { flex-direction: column; align-items: center; text-align: center; }
+    .detalles-poster { margin-bottom: 2rem; } /* Add space below poster when stacked */
+    .movie-title-main { font-size: 2.5rem; } /* Slightly larger than before, but smaller than desktop */
+    .action-buttons { justify-content: center; }
+    .detalles-pelicula-content, .reparto-section {
+        padding: 2rem 3%; /* Reduce horizontal padding */
+    }
+}
+
+@media (max-width: 768px) {
+    .detalles-poster {
+        width: 80%; /* Make poster more flexible */
+        max-width: 250px; /* Limit max size */
+    }
+    .movie-title-main { font-size: 2rem; } /* Further reduce title size */
+    .movie-meta-line, .genre-badges { justify-content: center; } /* Center meta info */
+    .slider-wrapper {
+        padding: 0; /* Remove padding for slider controls */
+    }
+    .slider-control {
+        display: none; /* Hide controls on smaller screens */
+    }
+    .reparto-grid {
+        padding: 10px 15px 25px 15px; /* Adjust padding for scrollable area */
+    }
+    .actor-card {
+        flex: 0 0 140px; /* Further reduce actor card width */
+    }
+}
+
+@media (max-width: 480px) {
+    .detalles-pelicula-content, .reparto-section {
+        padding: 1.5rem 2%; /* Further reduce horizontal padding on very small screens */
+    }
+    .movie-title-main { font-size: 1.8rem; } /* Even smaller title for tiny screens */
+    .action-buttons { flex-direction: column; gap: 10px; } /* Stack buttons vertically */
+    .btn-trailer-main, .btn-mi-lista { width: 100%; } /* Full width buttons */
+    .actor-card {
+        flex: 0 0 120px; /* Even smaller actor card width */
+    }
+}
