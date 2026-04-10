@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
@@ -52,21 +53,25 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
           {peliculas.map(pelicula => (
             <div key={pelicula.id} className="tarjeta-wrapper">
               <div className="tarjeta">
-                <div className="tarjeta-imagen">
-                  {pelicula.poster_path
-                    ? <img
-                        src={`${TMDB_IMG}${pelicula.poster_path}`}
-                        alt={pelicula.title}
-                        className="tarjeta-poster"
-                      />
-                    : <div className="tarjeta-sin-imagen" />
-                  }
-                  <span className="tarjeta-score">
-                    ★ {pelicula.vote_average.toFixed(1)}
-                  </span>
-                </div>
+                <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-link">
+                  <div className="tarjeta-imagen">
+                    {pelicula.poster_path
+                      ? <img
+                          src={`${TMDB_IMG}${pelicula.poster_path}`}
+                          alt={pelicula.title}
+                          className="tarjeta-poster"
+                        />
+                      : <div className="tarjeta-sin-imagen" />
+                    }
+                    <span className="tarjeta-score">
+                      ★ {pelicula.vote_average.toFixed(1)}
+                    </span>
+                  </div>
+                </Link>
                 <div className="tarjeta-info">
-                  <p className="tarjeta-titulo">{pelicula.title}</p>
+                  <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-titulo-link">
+                    <p className="tarjeta-titulo">{pelicula.title}</p>
+                  </Link>
                   <p className="tarjeta-meta">
                     {pelicula.genre_ids[0] ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
                   </p>
