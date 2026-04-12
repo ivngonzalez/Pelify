@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import './BuscadorPeliculas.css';
 
 const BuscadorPeliculas = () => {
+  const navigate = useNavigate();
   const [filtros, setFiltros] = useState({
     genero: '',
     duracion: '',
@@ -14,8 +16,44 @@ const BuscadorPeliculas = () => {
   };
 
   const handleBuscar = () => {
-    console.log('Filtros seleccionados:', filtros);
-    // aquí llamarás a tu service cuando conectes el backend
+    const queryParams = new URLSearchParams();
+
+    // Mapping for genre
+    const genreMap = {
+      'accion': '28',
+      'drama': '18',
+      'comedia': '35',
+      'terror': '27',
+      'scifi': '878',
+      'animacion': '16'
+    };
+    if (filtros.genero && genreMap[filtros.genero]) {
+      queryParams.append('generos', genreMap[filtros.genero]);
+    }
+
+    // Mapping for duration
+    if (filtros.duracion === 'corta') {
+      queryParams.append('duracionMax', '89'); // Less than 90 min
+    } else if (filtros.duracion === 'media') {
+      queryParams.append('duracionMax', '120'); // Up to 120 min (to filter out longer ones)
+    }
+    // 'larga' is ignored as ResultadosBusqueda only uses duracionMax
+
+    // Mapping for year
+    if (filtros.anio === '2024-2025') {
+      queryParams.append('anioMin', '2024');
+      queryParams.append('anioMax', '2025');
+    } else if (filtros.anio === '2010-2023') {
+      queryParams.append('anioMin', '2010');
+      queryParams.append('anioMax', '2023');
+    } else if (filtros.anio === '2000-2009') {
+      queryParams.append('anioMin', '2000');
+      queryParams.append('anioMax', '2009');
+    } else if (filtros.anio === 'clasicos') {
+      queryParams.append('anioMax', '1999'); // Assuming classics are before 2000
+    }
+
+    navigate(`/resultados?${queryParams.toString()}`);
   };
 
   return (

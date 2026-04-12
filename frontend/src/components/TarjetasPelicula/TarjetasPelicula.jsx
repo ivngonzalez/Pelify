@@ -5,19 +5,23 @@ import { Link } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction }) => {
-  const [peliculas, setPeliculas] = useState([]);
-  const [cargando, setCargando] = useState(true);
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
+  const [peliculas, setPeliculas] = useState(initialMovies || []);
+  const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction); 
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    if (fetchFunction) {
+    if (fetchFunction && !initialMovies) {
+      setCargando(true);
       fetchFunction()
         .then(data => setPeliculas(data))
         .catch(err => console.error("Error cargando peliculas:", err))
         .finally(() => setCargando(false));
+    } else if (initialMovies) {
+        setCargando(false);
+        setPeliculas(initialMovies);
     }
-  }, [fetchFunction]);
+  }, [fetchFunction, initialMovies]);
 
   const scroll = (direction) => {
     const { current } = scrollRef;
@@ -35,6 +39,8 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
       </Container>
     </section>
   );
+
+  if (peliculas.length === 0) return null;
 
   return (
     <section className="tarjetas-seccion">
@@ -73,7 +79,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
                     <p className="tarjeta-titulo">{pelicula.title}</p>
                   </Link>
                   <p className="tarjeta-meta">
-                    {pelicula.genre_ids[0] ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
+                    {pelicula.genre_ids && pelicula.genre_ids.length > 0 ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
                   </p>
                   <button className="tarjeta-boton">+ Mi lista</button>
                 </div>
