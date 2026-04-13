@@ -1,54 +1,169 @@
 .buscador-seccion {
-    padding: 40px 0 20px;
+    padding: 48px 0 64px;
     background-color: var(--fondo);
 }
 
-.buscador-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--texto-secundario);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-}
-
 .buscador-card {
+    max-width: 960px;
+    margin: 0 auto;
     background-color: var(--fondo-claro);
     border: 1px solid #3a3d47;
     border-radius: 10px;
-    padding: 24px;
+    padding: 28px;
 }
 
 .buscador-titulo {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
     color: var(--texto);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.buscador-subtitulo {
+    font-size: 14px;
+    color: var(--texto-secundario);
+    margin-bottom: 24px;
 }
 
 .buscador-field-label {
     font-size: 11px;
     color: var(--texto-secundario);
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 
-.buscador-select {
+.buscador-select,
+.buscador-input {
     width: 100%;
-    background-color: var(--fondo-claro);
-    border: 1px solid #4D5061;
+    background-color: var(--fondo);
+    border: 1px solid #4d5061;
     border-radius: 6px;
     color: var(--texto);
-    padding: 9px 12px;
+    padding: 10px 12px;
     font-size: 13px;
     appearance: auto;
-    cursor: pointer;
     transition: border-color 0.2s ease;
 }
 
-.buscador-select:focus {
+.buscador-select:focus,
+.buscador-input:focus {
     outline: none;
     border-color: var(--acento);
+}
+
+.buscador-generos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.buscador-genero-chip {
+    border: 1px solid #4d5061;
+    background-color: var(--fondo);
+    color: var(--texto);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.buscador-genero-chip:hover {
+    border-color: var(--acento);
+    color: var(--acento);
+}
+
+.buscador-genero-chip.activo {
+    background-color: var(--acento);
+    border-color: var(--acento);
+    color: var(--fondo);
+}
+
+.buscador-duracion-container,
+.buscador-puntuacion-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.buscador-slider {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: #3a3d47;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.buscador-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--acento);
+    cursor: pointer;
+}
+
+.buscador-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--acento);
+    cursor: pointer;
+    border: none;
+}
+
+.buscador-duracion-valor,
+.buscador-puntuacion-valor {
+    min-width: 70px;
+    text-align: right;
+    font-weight: 500;
+    color: var(--acento);
+    font-size: 12px;
+}
+
+.buscador-filtros-avanzados {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #3a3d47;
+}
+
+.buscador-boton-expandir {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.buscador-boton-expandir:hover {
+    color: var(--acento);
+}
+
+.buscador-contenido-avanzado {
+    margin-top: 14px;
+}
+
+.buscador-toggle {
+    color: var(--texto);
+    font-size: 13px;
+}
+
+.buscador-toggle input[type="checkbox"] {
+    accent-color: var(--acento);
 }
 
 .buscador-boton {
@@ -56,29 +171,27 @@
     background-color: var(--acento) !important;
     border: none !important;
     color: var(--fondo) !important;
-    padding: 11px;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 6px;
+    padding: 11px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
     transition: opacity 0.2s ease;
-    margin-top: 4px;
-    cursor: pointer;
 }
 
 .buscador-boton:hover {
-    opacity: 0.85;
-}
-
-.buscador-boton:active {
-    opacity: 1;
+    opacity: 0.88;
 }
 
 @media (max-width: 768px) {
     .buscador-seccion {
-        padding: 28px 0 16px;
+        padding: 30px 0 48px;
     }
 
     .buscador-card {
         padding: 18px;
+    }
+
+    .buscador-titulo {
+        font-size: 24px;
     }
 }

@@ -11,17 +11,33 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    if (fetchFunction && !initialMovies) {
-      setCargando(true);
-      fetchFunction()
-        .then(data => setPeliculas(data))
-        .catch(err => console.error("Error cargando peliculas:", err))
-        .finally(() => setCargando(false));
-    } else if (initialMovies) {
-        setCargando(false);
-        setPeliculas(initialMovies);
+    let active = true; // Flag to prevent setting state on unmounted component
+
+    if (fetchFunction && !initialMovies && peliculas.length === 0) {
+      const fetchData = async () => {
+        if (active) {
+            setCargando(true);
+        }
+        try {
+          const data = await fetchFunction();
+          if (active) {
+            setPeliculas(data);
+          }
+        } catch (err) {
+          console.error("Error cargando peliculas:", err);
+        } finally {
+          if (active) {
+            setCargando(false);
+          }
+        }
+      };
+      fetchData();
     }
-  }, [fetchFunction, initialMovies]);
+
+    return () => {
+      active = false; // Cleanup to prevent memory leaks and state updates on unmounted components
+    };
+  }, [fetchFunction, initialMovies, peliculas.length]);
 
   const scroll = (direction) => {
     const { current } = scrollRef;

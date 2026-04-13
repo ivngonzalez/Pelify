@@ -19,19 +19,30 @@ const ResultadosBusqueda = () => {
         '35': 'Comedia',
         '27': 'Terror',
         '878': 'Ciencia ficción',
-        '16': 'Animación'
+        '16': 'Animación',
+        '10749': 'Romance',
+        '53': 'Thriller',
+        '12': 'Aventura',
+        '14': 'Fantasía'
     };
 
-    const durationDisplayMap = {
-        '89': 'Menos de 90 min',
-        '120': '90 – 120 min' // This range in BuscadorPeliculas.jsx is 90-120 min
+    const idiomesDisplayMap = {
+        'es': 'Español',
+        'en': 'Inglés',
+        'fr': 'Francés',
+        'de': 'Alemán',
+        'it': 'Italiano',
+        'pt': 'Portugués',
+        'ja': 'Japonés',
+        'ko': 'Coreano'
     };
 
-    const yearDisplayMap = {
-        '2024-2025': '2024 – 2025',
-        '2010-2023': '2010 – 2023',
-        '2000-2009': '2000 – 2009',
-        '1999': 'Clásicos (antes de 2000)' // anioMax=1999 from BuscadorPeliculas.jsx
+    const plataformasDisplayMap = {
+        '8': 'Netflix',
+        '3': 'HBO',
+        '37': 'Disney+',
+        '119': 'Amazon Prime',
+        '40': 'Apple TV'
     };
 
     useEffect(() => {
@@ -62,12 +73,11 @@ const ResultadosBusqueda = () => {
                 filtros.puntuacionMin ||
                 filtros.idiomaOriginal
             ) {
-                pageTitle = "Recomendaciones para ti"; // Restored phrase
+                pageTitle = "Recomendaciones para ti";
             } else {
                 pageTitle = "Todas las Películas";
             }
             setTitle(pageTitle);
-
 
             const results = await searchMovies(searchTerm || filtros);
             setMovies(results);
@@ -80,6 +90,8 @@ const ResultadosBusqueda = () => {
     // Construct active filters for display
     const queryParams = new URLSearchParams(location.search);
     const activeFilters = [];
+
+    // Géneros
     const currentGeneros = (queryParams.get('generos') || '').split(',').filter(Boolean);
     if (currentGeneros.length > 0) {
         currentGeneros.forEach(genreId => {
@@ -88,30 +100,62 @@ const ResultadosBusqueda = () => {
             }
         });
     }
+
+    // Duración
     const currentDuracionMax = queryParams.get('duracionMax');
-    if (currentDuracionMax && durationDisplayMap[currentDuracionMax]) {
-        activeFilters.push(durationDisplayMap[currentDuracionMax]);
+    if (currentDuracionMax) {
+        activeFilters.push(`Duración: hasta ${currentDuracionMax} min`);
     }
-    
+
+    // Años
     const currentAnioMin = queryParams.get('anioMin');
     const currentAnioMax = queryParams.get('anioMax');
 
-    // Handle year filter display logic
     if (currentAnioMin && currentAnioMax) {
-        let yearRangeKey = `${currentAnioMin}-${currentAnioMax}`;
-        if (yearDisplayMap[yearRangeKey]) {
-            activeFilters.push(yearDisplayMap[yearRangeKey]);
-        } else {
-            activeFilters.push(`Año: ${currentAnioMin}-${currentAnioMax}`);
-        }
-    } else if (currentAnioMax === '1999') { // Handle 'Clásicos'
-        activeFilters.push(yearDisplayMap['1999']);
-    } else if (currentAnioMin) { // Only min year specified
-        activeFilters.push(`Año desde: ${currentAnioMin}`);
-    } else if (currentAnioMax) { // Only max year specified
-        activeFilters.push(`Año hasta: ${currentAnioMax}`);
+        activeFilters.push(`${currentAnioMin}-${currentAnioMax}`);
+    } else if (currentAnioMin) {
+        activeFilters.push(`Desde ${currentAnioMin}`);
+    } else if (currentAnioMax) {
+        activeFilters.push(`Hasta ${currentAnioMax}`);
     }
 
+    // Puntuación
+    const currentPuntuacionMin = queryParams.get('puntuacionMin');
+    if (currentPuntuacionMin && currentPuntuacionMin !== '1') {
+        activeFilters.push(`Puntuación: ${currentPuntuacionMin}+`);
+    }
+
+    // Votos
+    const currentVotosMin = queryParams.get('votosMin');
+    if (currentVotosMin) {
+        const votosLabel = {
+            '100': '100+ votos',
+            '500': '500+ votos',
+            '1000': '1000+ votos',
+            '5000': '5000+ votos'
+        };
+        if (votosLabel[currentVotosMin]) {
+            activeFilters.push(votosLabel[currentVotosMin]);
+        }
+    }
+
+    // Idioma
+    const currentIdiomaOriginal = queryParams.get('idiomaOriginal');
+    if (currentIdiomaOriginal && idiomesDisplayMap[currentIdiomaOriginal]) {
+        activeFilters.push(`Idioma: ${idiomesDisplayMap[currentIdiomaOriginal]}`);
+    }
+
+    // Plataforma
+    const currentPlataforma = queryParams.get('plataforma');
+    if (currentPlataforma && plataformasDisplayMap[currentPlataforma]) {
+        activeFilters.push(`En: ${plataformasDisplayMap[currentPlataforma]}`);
+    }
+
+    // Contenido adulto
+    const incluirAdultos = queryParams.get('incluirAdultos') === 'true';
+    if (incluirAdultos) {
+        activeFilters.push('Incluyendo +18');
+    }
 
     if (loading) {
         return (
@@ -128,14 +172,14 @@ const ResultadosBusqueda = () => {
 
                 {activeFilters.length > 0 && (
                     <div className="mb-4">
-                        <p className="lead">Filtros aplicados: {activeFilters.join(', ')}</p>
+                        <p className="lead">Filtros aplicados: <span className="filtros-activos">{activeFilters.join(' • ')}</span></p>
                     </div>
                 )}
 
                 {movies.length > 0 ? (
                     <TarjetasPelicula movies={movies} />
                 ) : (
-                    <p>No se encontraron películas con los filtros seleccionadas.</p>
+                    <p>No se encontraron películas con los filtros seleccionados.</p>
                 )}
             </Container>
         </div>
