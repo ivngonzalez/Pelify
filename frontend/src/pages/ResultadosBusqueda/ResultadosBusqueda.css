@@ -1,0 +1,29 @@
+/* Styles for ResultadosBusqueda page */
+
+.resultados-busqueda-page {
+    min-height: calc(100vh - 200px);
+    padding: 40px 0;
+}
+
+.resultados-busqueda-page h1 {
+    color: var(--texto);
+    font-weight: 600;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.resultados-busqueda-page .lead {
+    color: var(--texto-secundario);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.filtros-activos {
+    display: block;
+    padding: 10px;
+    background-color: rgba(215, 207, 7, 0.08);
+    border-left: 3px solid var(--acento);
+    border-radius: 4px;
+    margin-top: 10px;
+    color: var(--texto);
+}

@@ -7,6 +7,7 @@ import BuscadorPeliculas from './components/BuscadorPeliculas/BuscadorPeliculas'
 import TarjetasPelicula from './components/TarjetasPelicula/TarjetasPelicula';
 import Perfil from './pages/Perfil/Perfil';
 import DetallesPelicula from './pages/DetallesPelicula/DetallesPelicula';
+import ResultadosBusqueda from './pages/ResultadosBusqueda/ResultadosBusqueda'; 
 import { 
   getPeliculasPopulares, 
   getProximosLanzamientos, 
@@ -61,6 +62,9 @@ function App() {
 
           {/* VISTA DE DETALLE DE PELÍCULA */}
           <Route path="/pelicula/:id" element={<DetallesPelicula />} />
+
+          {/* VISTA DE RESULTADOS DE BÚSQUEDA */}
+          <Route path="/resultados" element={<ResultadosBusqueda />} />
 
           {/* Puedes agregar una ruta para "No encontrado" aquí */}
         </Routes>

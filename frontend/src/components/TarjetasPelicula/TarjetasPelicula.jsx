@@ -5,19 +5,39 @@ import { Link } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction }) => {
-  const [peliculas, setPeliculas] = useState([]);
-  const [cargando, setCargando] = useState(true);
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
+  const [peliculas, setPeliculas] = useState(initialMovies || []);
+  const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction); 
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    if (fetchFunction) {
-      fetchFunction()
-        .then(data => setPeliculas(data))
-        .catch(err => console.error("Error cargando peliculas:", err))
-        .finally(() => setCargando(false));
+    let active = true; 
+
+    if (fetchFunction && !initialMovies && peliculas.length === 0) {
+      const fetchData = async () => {
+        if (active) {
+            setCargando(true);
+        }
+        try {
+          const data = await fetchFunction();
+          if (active) {
+            setPeliculas(data);
+          }
+        } catch (err) {
+          console.error("Error cargando peliculas:", err);
+        } finally {
+          if (active) {
+            setCargando(false);
+          }
+        }
+      };
+      fetchData();
     }
-  }, [fetchFunction]);
+
+    return () => {
+      active = false; // Cleanup to prevent memory leaks and state updates on unmounted components
+    };
+  }, [fetchFunction, initialMovies, peliculas.length]);
 
   const scroll = (direction) => {
     const { current } = scrollRef;
@@ -35,6 +55,8 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
       </Container>
     </section>
   );
+
+  if (peliculas.length === 0) return null;
 
   return (
     <section className="tarjetas-seccion">
@@ -73,7 +95,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction }) => {
                     <p className="tarjeta-titulo">{pelicula.title}</p>
                   </Link>
                   <p className="tarjeta-meta">
-                    {pelicula.genre_ids[0] ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
+                    {pelicula.genre_ids && pelicula.genre_ids.length > 0 ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
                   </p>
                   <button className="tarjeta-boton">+ Mi lista</button>
                 </div>

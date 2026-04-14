@@ -84,7 +84,7 @@ const DetallesPelicula = () => {
 
                 <div className="detalles-pelicula-content">
                     <button className="volver-link" onClick={() => navigate(-1)}>
-                        <ArrowLeft size={16} /> Volver al inicio
+                        <ArrowLeft size={16} /> Volver
                     </button>
 
                     <div className="detalles-main-row">
