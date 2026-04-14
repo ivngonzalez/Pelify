@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { searchMovies } from '../../services/tmdbService';
 import TarjetasPelicula from '../../components/TarjetasPelicula/TarjetasPelicula';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
+import { ArrowLeft } from 'lucide-react';
 
 import './ResultadosBusqueda.css';
 
@@ -11,8 +12,8 @@ const ResultadosBusqueda = () => {
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("Resultados de Búsqueda");
     const location = useLocation();
+    const navigate = useNavigate();
 
-    // Define mappings for display
     const genreDisplayMap = {
         '28': 'Acción',
         '18': 'Drama',
@@ -159,15 +160,19 @@ const ResultadosBusqueda = () => {
 
     if (loading) {
         return (
-            <Container className="text-center my-5">
-                <h2>Cargando resultados...</h2>
-            </Container>
+            <div className="status-container">
+                <Spinner animation="border" variant="primary" />
+                <p className="mt-3">Cargando resultados...</p>
+            </div>
         );
     }
 
     return (
         <div className="resultados-busqueda-page">
             <Container className="my-4">
+                <button className="volver-link" onClick={() => navigate(-1)}>
+                    <ArrowLeft size={16} /> Volver
+                </button>
                 <h1 className="mb-4">{title}</h1>
 
                 {activeFilters.length > 0 && (

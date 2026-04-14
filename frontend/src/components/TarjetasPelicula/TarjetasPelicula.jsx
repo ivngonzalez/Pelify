@@ -11,7 +11,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    let active = true; // Flag to prevent setting state on unmounted component
+    let active = true; 
 
     if (fetchFunction && !initialMovies && peliculas.length === 0) {
       const fetchData = async () => {
