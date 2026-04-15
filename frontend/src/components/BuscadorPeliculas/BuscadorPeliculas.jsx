@@ -91,7 +91,7 @@ const BuscadorPeliculas = () => {
       queryParams.append('votosMin', filtros.votosMin);
     }
 
-    navigate(`/resultados?${queryParams.toString()}`);
+    navigate(`/resultados-busqueda?${queryParams.toString()}`);
   };
 
   return (

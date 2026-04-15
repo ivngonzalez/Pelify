@@ -64,7 +64,7 @@ function App() {
           <Route path="/pelicula/:id" element={<DetallesPelicula />} />
 
           {/* VISTA DE RESULTADOS DE BÚSQUEDA */}
-          <Route path="/resultados" element={<ResultadosBusqueda />} />
+          <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
 
           {/* Puedes agregar una ruta para "No encontrado" aquí */}
         </Routes>

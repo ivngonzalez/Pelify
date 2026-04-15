@@ -63,6 +63,11 @@ const ResultadosBusqueda = () => {
                 incluirAdultos: queryParams.get('incluirAdultos') === 'true'
             };
 
+            console.log("ResultadosBusqueda - location.search:", location.search);
+            console.log("ResultadosBusqueda - searchTerm from URL:", searchTerm);
+            console.log("ResultadosBusqueda - filtros object:", filtros);
+            console.log("ResultadosBusqueda - argument to searchMovies:", searchTerm || filtros);
+
             let pageTitle = "Resultados de Búsqueda";
             if (searchTerm) {
                 pageTitle = `Resultados para: "${searchTerm}"`;
