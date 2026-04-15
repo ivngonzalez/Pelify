@@ -49,7 +49,8 @@ export const searchMovies = async (queryOrFilters) => {
             puntuacionMin,
             votosMin,
             idiomaOriginal,
-            incluirAdultos
+            incluirAdultos,
+            plataforma // New filter
         } = queryOrFilters;
 
         if (generos && generos.length > 0) params += `&with_genres=${generos.join(',')}`;
@@ -60,6 +61,7 @@ export const searchMovies = async (queryOrFilters) => {
         if (votosMin) params += `&vote_count.gte=${votosMin}`;
         if (idiomaOriginal) params += `&with_original_language=${idiomaOriginal}`;
         params += `&include_adult=${incluirAdultos ? 'true' : 'false'}`;
+        if (plataforma) params += `&with_watch_providers=${plataforma}&watch_region=ES`;
     } else {
         // Default to popular movies if no specific query or filters are provided
         endpoint = '/movie/popular';
