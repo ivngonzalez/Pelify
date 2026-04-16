@@ -14,7 +14,7 @@ const Navegacion = () => {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/resultados-busqueda?query=${encodeURIComponent(searchTerm.trim())}`);
-      setSearchTerm(''); // Clear search term after submission
+      setSearchTerm('');
     }
   };
 
@@ -32,7 +32,7 @@ const Navegacion = () => {
           Pelify
         </Navbar.Brand>
 
-        {/* Search Bar - Visible on larger screens, hidden on smaller screens initially */}
+        {/* Barra de búsqueda */}
         <div className="d-none d-lg-flex search-bar-container me-auto ms-3">
           <InputGroup className="nav-search-input-group">
             <FormControl
@@ -63,7 +63,7 @@ const Navegacion = () => {
 
         <Navbar.Collapse id="nav-contenido-principal">
           <Nav className="ms-auto align-items-center">
-            {/* Search Bar - Visible only when collapsed on smaller screens */}
+            {/* Barra de búsqueda pantallas pequeñas */}
             <div className="d-lg-none w-100 mb-3 mt-2">
               <InputGroup className="nav-search-input-group">
                 <FormControl
@@ -84,7 +84,6 @@ const Navegacion = () => {
               </InputGroup>
             </div>
             <Nav.Link as={Link} to="/" className="nav-enlace">Inicio</Nav.Link>
-            <Nav.Link href="#explorar" className="nav-enlace">Explorar</Nav.Link>
             <Nav.Link href="#mi-lista" className="nav-enlace">Mi lista</Nav.Link>
 
             <Link to="/perfil" className="nav-avatar ms-lg-3 d-none d-lg-flex text-decoration-none text-white">

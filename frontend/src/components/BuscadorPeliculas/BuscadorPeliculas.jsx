@@ -156,11 +156,11 @@ const BuscadorPeliculas = () => {
               <input
                 type="number"
                 name="anioMax"
-                className="buscador-input" // Assuming a class for number inputs, adjust if needed
+                className="buscador-input" 
                 value={filtros.anioMax}
                 onChange={handleChange}
-                min="1800" // Example min year
-                max={new Date().getFullYear().toString()} // Max year is current year
+                min="1800" 
+                max={new Date().getFullYear().toString()} 
                 placeholder="Ej: 2023"
               />
             </Col>
@@ -188,7 +188,7 @@ const BuscadorPeliculas = () => {
           </Row>
 
           <Row className="mb-4">
-            <Col xs={12}> {/* Puntuación mínima - now full width */}
+            <Col xs={12}> {/* Puntuación mínima */}
               <label className="buscador-field-label">
                 Puntuación mínima ({Number(filtros.puntuacionMin).toFixed(1)})
               </label>
