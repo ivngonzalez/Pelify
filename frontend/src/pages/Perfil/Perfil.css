@@ -1,12 +1,12 @@
 .card-perfil {
-    background-color: var(--fondo); /* Usando tu color oscuro de global.css */
+    background-color: var(--fondo); 
     border-radius: 15px;
     border: 1px solid var(--fondo-claro);
     color: var(--texto);
 }
 
 .text-acento {
-    color: var(--acento) !important; /* El amarillo de tu proyecto */
+    color: var(--acento) !important; 
 }
 
 .avatar-placeholder {

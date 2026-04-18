@@ -44,7 +44,6 @@
         );
 }
 
-/* CONTENIDO PRINCIPAL */
 .detalles-pelicula-content {
     position: relative;
     z-index: 10; 
@@ -120,8 +119,8 @@
 
 .btn-trailer-main {
     background: transparent;
-    color: var(--acento); /* Use accent color for text */
-    border: 2px solid var(--acento); /* Use accent color for border */
+    color: var(--acento); 
+    border: 2px solid var(--acento); 
     padding: 12px 25px;
     border-radius: 5px;
     font-weight: bold;
@@ -133,15 +132,15 @@
 }
 
 .btn-trailer-main:hover {
-    background-color: var(--acento); /* Fill with accent color on hover */
-    color: var(--fondo); /* Change text to background color on hover */
-    border-color: var(--acento); /* Keep accent border */
+    background-color: var(--acento); 
+    color: var(--fondo); 
+    border-color: var(--acento);
 }
 
 .btn-mi-lista {
     background: transparent;
-    color: var(--texto); /* Use primary text color */
-    border: 2px solid var(--texto); /* Use primary text color for border */
+    color: var(--texto); 
+    border: 2px solid var(--texto); 
     padding: 12px 25px;
     border-radius: 5px;
     display: flex;
@@ -152,9 +151,9 @@
 }
 
 .btn-mi-lista:hover {
-    background-color: rgba(var(--texto-rgb), 0.1); /* Subtle background on hover */
-    border-color: var(--texto); /* Keep text color for border on hover */
-    color: var(--texto); /* Keep text color on hover */
+    background-color: rgba(var(--texto-rgb), 0.1); 
+    border-color: var(--texto); 
+    color: var(--texto); 
 }
 
 .reparto-section {
@@ -272,43 +271,43 @@
 /* RESPONSIVE */
 @media (max-width: 992px) {
     .detalles-main-row { flex-direction: column; align-items: center; text-align: center; }
-    .detalles-poster { margin-bottom: 2rem; } /* Add space below poster when stacked */
-    .movie-title-main { font-size: 2.5rem; } /* Slightly larger than before, but smaller than desktop */
+    .detalles-poster { margin-bottom: 2rem; } 
+    .movie-title-main { font-size: 2.5rem; } 
     .action-buttons { justify-content: center; }
     .detalles-pelicula-content, .reparto-section {
-        padding: 2rem 3%; /* Reduce horizontal padding */
+        padding: 2rem 3%; 
     }
 }
 
 @media (max-width: 768px) {
     .detalles-poster {
-        width: 80%; /* Make poster more flexible */
-        max-width: 250px; /* Limit max size */
+        width: 80%; 
+        max-width: 250px;
     }
-    .movie-title-main { font-size: 2rem; } /* Further reduce title size */
-    .movie-meta-line, .genre-badges { justify-content: center; } /* Center meta info */
+    .movie-title-main { font-size: 2rem; } 
+    .movie-meta-line, .genre-badges { justify-content: center; } 
     .slider-wrapper {
-        padding: 0; /* Remove padding for slider controls */
+        padding: 0; 
     }
     .slider-control {
-        display: none; /* Hide controls on smaller screens */
+        display: none; 
     }
     .reparto-grid {
-        padding: 10px 15px 25px 15px; /* Adjust padding for scrollable area */
+        padding: 10px 15px 25px 15px;
     }
     .actor-card {
-        flex: 0 0 140px; /* Further reduce actor card width */
+        flex: 0 0 140px;
     }
 }
 
 @media (max-width: 480px) {
     .detalles-pelicula-content, .reparto-section {
-        padding: 1.5rem 2%; /* Further reduce horizontal padding on very small screens */
+        padding: 1.5rem 2%; 
     }
-    .movie-title-main { font-size: 1.8rem; } /* Even smaller title for tiny screens */
-    .action-buttons { flex-direction: column; gap: 10px; } /* Stack buttons vertically */
-    .btn-trailer-main, .btn-mi-lista { width: 100%; } /* Full width buttons */
+    .movie-title-main { font-size: 1.8rem; } 
+    .action-buttons { flex-direction: column; gap: 10px; } 
+    .btn-trailer-main, .btn-mi-lista { width: 100%; } 
     .actor-card {
-        flex: 0 0 120px; /* Even smaller actor card width */
+        flex: 0 0 120px;
     }
 }

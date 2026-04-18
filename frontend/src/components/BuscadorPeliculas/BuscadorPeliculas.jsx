@@ -244,7 +244,7 @@ const BuscadorPeliculas = () => {
             </Col>
           </Row>
 
-          <Button className="buscador-boton" onClick={handleBuscar}>
+          <Button variant="secondary" className="buscador-boton" onClick={handleBuscar}>
             Buscar recomendaciones
           </Button>
         </div>
