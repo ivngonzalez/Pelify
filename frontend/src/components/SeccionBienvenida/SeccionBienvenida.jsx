@@ -2,11 +2,11 @@ import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import './SeccionBienvenida.css';
 
 const SeccionBienvenida = ({ pelicula }) => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
   const backdropUrl = pelicula?.backdrop_path 
     ? `https://image.tmdb.org/t/p/original${pelicula.backdrop_path}`
     : null;

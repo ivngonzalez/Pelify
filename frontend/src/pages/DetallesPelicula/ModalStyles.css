@@ -4,6 +4,7 @@
 
 .modal-title {
     color: var(--texto);
+    font-weight: bold;
 }
 
 .modal-header .btn-close {
