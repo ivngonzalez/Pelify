@@ -151,7 +151,7 @@
 }
 
 .btn-mi-lista:hover {
-    background-color: rgba(var(--texto-rgb), 0.1); 
+    background-color: color-mix(in srgb, var(--texto) 10%, transparent);
     border-color: var(--texto); 
     color: var(--texto); 
 }
