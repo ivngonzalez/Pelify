@@ -129,6 +129,43 @@
     font-size: 12px;
 }
 
+.buscador-filtros-avanzados {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #3a3d47;
+}
+
+.buscador-boton-expandir {
+    background: none;
+    border: none;
+    color: var(--texto-secundario);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+}
+
+.buscador-boton-expandir:hover {
+    color: var(--acento);
+}
+
+.buscador-contenido-avanzado {
+    margin-top: 14px;
+}
+
+.buscador-toggle {
+    color: var(--texto);
+    font-size: 13px;
+}
+
+.buscador-toggle input[type="checkbox"] {
+    accent-color: var(--acento);
+}
+
 .buscador-boton {
     width: 100%;
     background-color: var(--acento) !important;

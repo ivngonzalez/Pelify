@@ -2,6 +2,7 @@ import React from 'react';
 import './Perfil.css';
 
 const Perfil = () => {
+  // Datos de ejemplo (esto vendría de tu backend más adelante)
   const usuario = {
     nombre: "Esteban",
     email: "esteban@ejemplo.com",

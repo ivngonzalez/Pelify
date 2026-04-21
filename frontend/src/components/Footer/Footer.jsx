@@ -17,6 +17,7 @@ const Footer = () => {
           <Col xs={6} lg={2} className="footer-columna">
             <div className="footer-titulo-seccion">Navegación</div>
             <a href="/" className="footer-enlace">Inicio</a>
+            <a href="#explorar" className="footer-enlace">Explorar</a>
             <a href="#mi-lista" className="footer-enlace">Mi lista</a>
           </Col>
 

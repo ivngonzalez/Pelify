@@ -11,8 +11,7 @@ const BuscadorPeliculas = () => {
     anioMin: '',
     anioMax: '',
     puntuacionMin: '6',
-    votosMin: '',
-    plataforma: '' // New state for platform
+    votosMin: ''
   });
 
   const genreMap = {
@@ -35,15 +34,6 @@ const BuscadorPeliculas = () => {
     { value: 'animacion', label: 'Animación' },
     { value: 'romance', label: 'Romance' },
     { value: 'thriller', label: 'Thriller' }
-  ];
-
-  const platformOptions = [
-    { value: '', label: 'Cualquiera' },
-    { value: '8', label: 'Netflix' },
-    { value: '3', label: 'HBO Max' },
-    { value: '37', label: 'Disney+' },
-    { value: '119', label: 'Amazon Prime Video' },
-    { value: '40', label: 'Apple TV+' }
   ];
 
   const toggleGenero = (genero) => {
@@ -101,11 +91,7 @@ const BuscadorPeliculas = () => {
       queryParams.append('votosMin', filtros.votosMin);
     }
 
-    if (filtros.plataforma) { // Append platform filter if selected
-      queryParams.append('plataforma', filtros.plataforma);
-    }
-
-    navigate(`/resultados-busqueda?${queryParams.toString()}`);
+    navigate(`/resultados?${queryParams.toString()}`);
   };
 
   return (
@@ -156,11 +142,11 @@ const BuscadorPeliculas = () => {
               <input
                 type="number"
                 name="anioMax"
-                className="buscador-input" 
+                className="buscador-input" // Assuming a class for number inputs, adjust if needed
                 value={filtros.anioMax}
                 onChange={handleChange}
-                min="1800" 
-                max={new Date().getFullYear().toString()} 
+                min="1800" // Example min year
+                max={new Date().getFullYear().toString()} // Max year is current year
                 placeholder="Ej: 2023"
               />
             </Col>
@@ -188,7 +174,7 @@ const BuscadorPeliculas = () => {
           </Row>
 
           <Row className="mb-4">
-            <Col xs={12}> {/* Puntuación mínima */}
+            <Col xs={12} md={6}>
               <label className="buscador-field-label">
                 Puntuación mínima ({Number(filtros.puntuacionMin).toFixed(1)})
               </label>
@@ -208,9 +194,7 @@ const BuscadorPeliculas = () => {
                 </span>
               </div>
             </Col>
-          </Row>
 
-          <Row className="mb-4">
             <Col xs={12} md={6}>
               <label className="buscador-field-label">Votos mínimos</label>
               <select
@@ -226,25 +210,9 @@ const BuscadorPeliculas = () => {
                 <option value="5000">5000+</option>
               </select>
             </Col>
-
-            <Col xs={12} md={6}> {/* Plataforma */}
-              <label className="buscador-field-label">Plataforma</label>
-              <select
-                name="plataforma"
-                className="buscador-select"
-                value={filtros.plataforma}
-                onChange={handleChange}
-              >
-                {platformOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </Col>
           </Row>
 
-          <Button variant="secondary" className="buscador-boton" onClick={handleBuscar}>
+          <Button className="buscador-boton" onClick={handleBuscar}>
             Buscar recomendaciones
           </Button>
         </div>

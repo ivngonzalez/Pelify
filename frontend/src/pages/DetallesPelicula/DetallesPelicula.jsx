@@ -13,7 +13,7 @@ const DetallesPelicula = () => {
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
     const [showTrailerModal, setShowTrailerModal] = useState(false);
-    const repartoScrollRef = useRef(null); 
+    const repartoScrollRef = useRef(null); // Ref for the reparto container
 
     const handleCloseTrailer = () => setShowTrailerModal(false);
     const handleShowTrailer = () => setShowTrailerModal(true);
@@ -21,7 +21,7 @@ const DetallesPelicula = () => {
     const scrollReparto = (direction) => {
         const { current } = repartoScrollRef;
         if (current) {
-            const scrollAmount = direction === 'left' ? -600 : 600; 
+            const scrollAmount = direction === 'left' ? -600 : 600; // Adjust scroll amount as needed
             current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     };
@@ -42,6 +42,7 @@ const DetallesPelicula = () => {
         fetchDetalle();
     }, [id]);
 
+    // Componente interno para estados de carga/error que mantiene el Layout
     const RenderContent = () => {
         if (cargando) {
             return (
@@ -138,7 +139,7 @@ const DetallesPelicula = () => {
                 {reparto.length > 0 && (
                     <div className="reparto-section">
                         <h4>Reparto Principal</h4>
-                        <div className="slider-wrapper"> 
+                        <div className="slider-wrapper"> {/* Add wrapper for controls */}
                             <button
                                 className="slider-control left"
                                 onClick={() => scrollReparto('left')}
