@@ -136,6 +136,11 @@
     padding: 12px;
 }
 
+.tarjeta-link, .tarjeta-titulo-link {
+    text-decoration: none;
+    display: block;
+}
+
 .tarjeta-titulo {
     font-size: 13px;
     font-weight: 500;
@@ -144,6 +149,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.tarjeta-titulo-link:hover .tarjeta-titulo {
+    color: var(--acento);
 }
 
 .tarjeta-meta {

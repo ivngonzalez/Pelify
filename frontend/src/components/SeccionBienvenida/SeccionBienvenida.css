@@ -9,11 +9,9 @@
     color: white;
     position: relative;
     overflow: hidden;
-    /* Gradiente por defecto más interesante que el negro puro */
     background-image: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
 }
 
-/* Animación de carga tipo skeleton para cuando no hay imagen */
 .bienvenida-seccion:not(.con-fondo)::after {
     content: "";
     position: absolute;
@@ -80,21 +78,7 @@
     text-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-.bienvenida-boton-accion {
-    background-color: var(--acento) !important;
-    border: none !important;
-    color: black !important;
-    padding: 14px 32px;
-    font-weight: 700;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: transform 0.2s ease;
-}
 
-.bienvenida-boton-accion:hover {
-    transform: scale(1.05);
-    background-color: white !important;
-}
 
 .bienvenida-boton-secundario {
     border: 2px solid rgba(255,255,255,0.3) !important;

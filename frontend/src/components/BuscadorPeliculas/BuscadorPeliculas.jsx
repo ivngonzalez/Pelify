@@ -1,84 +1,257 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import './BuscadorPeliculas.css';
 
 const BuscadorPeliculas = () => {
+  const navigate = useNavigate();
   const [filtros, setFiltros] = useState({
-    genero: '',
-    duracion: '',
-    anio: ''
+    generos: [],
+    duracionMax: '120',
+    anioMin: '',
+    anioMax: '',
+    puntuacionMin: '6',
+    votosMin: '',
+    plataforma: '' // New state for platform
   });
 
+  const genreMap = {
+    accion: '28',
+    drama: '18',
+    comedia: '35',
+    terror: '27',
+    scifi: '878',
+    animacion: '16',
+    romance: '10749',
+    thriller: '53'
+  };
+
+  const genreOptions = [
+    { value: 'accion', label: 'Acción' },
+    { value: 'drama', label: 'Drama' },
+    { value: 'comedia', label: 'Comedia' },
+    { value: 'terror', label: 'Terror' },
+    { value: 'scifi', label: 'Ciencia ficción' },
+    { value: 'animacion', label: 'Animación' },
+    { value: 'romance', label: 'Romance' },
+    { value: 'thriller', label: 'Thriller' }
+  ];
+
+  const platformOptions = [
+    { value: '', label: 'Cualquiera' },
+    { value: '8', label: 'Netflix' },
+    { value: '3', label: 'HBO Max' },
+    { value: '37', label: 'Disney+' },
+    { value: '119', label: 'Amazon Prime Video' },
+    { value: '40', label: 'Apple TV+' }
+  ];
+
+  const toggleGenero = (genero) => {
+    setFiltros((prev) => ({
+      ...prev,
+      generos: prev.generos.includes(genero)
+        ? prev.generos.filter((item) => item !== genero)
+        : [...prev.generos, genero]
+    }));
+  };
+
   const handleChange = (e) => {
-    setFiltros({ ...filtros, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFiltros((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
   const handleBuscar = () => {
-    console.log('Filtros seleccionados:', filtros);
-    // aquí llamarás a tu service cuando conectes el backend
+    const queryParams = new URLSearchParams();
+
+    const generosSeleccionados = filtros.generos
+      .filter((genero) => genreMap[genero])
+      .map((genero) => genreMap[genero]);
+
+    if (generosSeleccionados.length > 0) {
+      queryParams.append('generos', generosSeleccionados.join(','));
+    }
+
+    if (filtros.duracionMax) {
+      queryParams.append('duracionMax', filtros.duracionMax);
+    }
+
+    let anioMin = filtros.anioMin;
+    let anioMax = filtros.anioMax;
+
+    if (anioMin && anioMax && Number(anioMin) > Number(anioMax)) {
+      [anioMin, anioMax] = [anioMax, anioMin];
+    }
+
+    if (anioMin) {
+      queryParams.append('anioMin', anioMin);
+    }
+
+    if (anioMax) {
+      queryParams.append('anioMax', anioMax);
+    }
+
+    if (filtros.puntuacionMin) {
+      queryParams.append('puntuacionMin', filtros.puntuacionMin);
+    }
+
+    if (filtros.votosMin) {
+      queryParams.append('votosMin', filtros.votosMin);
+    }
+
+    if (filtros.plataforma) { // Append platform filter if selected
+      queryParams.append('plataforma', filtros.plataforma);
+    }
+
+    navigate(`/resultados-busqueda?${queryParams.toString()}`);
   };
 
   return (
     <section className="buscador-seccion">
       <Container>
-        <p className="buscador-label">Recomendador</p>
         <div className="buscador-card">
-          <h2 className="buscador-titulo">¿Qué quieres ver hoy?</h2>
-          <Row className="mb-3">
-            <Col xs={12} md={4} className="mb-3 mb-md-0">
-              <label className="buscador-field-label">Género</label>
-                <select
-                    name="genero"
-                    className="buscador-select"
-                    onChange={handleChange}
-                    value={filtros.genero}
+          <h1 className="buscador-titulo">Encuentra tu próxima película</h1>
+          <p className="buscador-subtitulo">
+            Filtra por género, duración, año y puntuación para encontrar algo que encaje contigo.
+          </p>
+
+          <div className="mb-4">
+            <label className="buscador-field-label">Género</label>
+            <div className="buscador-generos-grid">
+              {genreOptions.map((genre) => (
+                <button
+                  key={genre.value}
+                  type="button"
+                  className={`buscador-genero-chip ${
+                    filtros.generos.includes(genre.value) ? 'activo' : ''
+                  }`}
+                  onClick={() => toggleGenero(genre.value)}
+                  aria-pressed={filtros.generos.includes(genre.value)}
                 >
-                <option value="">Todos</option>
-                <option value="accion">Acción</option>
-                <option value="drama">Drama</option>
-                <option value="comedia">Comedia</option>
-                <option value="terror">Terror</option>
-                <option value="scifi">Ciencia ficción</option>
-                <option value="animacion">Animación</option>
-                </select>
+                  {genre.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <Row className="mb-4">
+            <Col xs={12} md={6}>
+              <label className="buscador-field-label">Año desde</label>
+              <input
+                type="number"
+                name="anioMin"
+                className="buscador-input" // Assuming a class for number inputs, adjust if needed
+                value={filtros.anioMin}
+                onChange={handleChange}
+                min="1800" // Example min year
+                max={new Date().getFullYear().toString()} // Max year is current year
+                placeholder="Ej: 1990"
+              />
             </Col>
-            <Col xs={12} md={4} className="mb-3 mb-md-0">
-                <label className="buscador-field-label">Duración</label>
-                <select
-                    name="duracion"
-                    className="buscador-select"
-                    onChange={handleChange}
-                    value={filtros.duracion}
-                >
-                <option value="">Cualquiera</option>
-                <option value="corta">Menos de 90 min</option>
-                <option value="media">90 – 120 min</option>
-                <option value="larga">Más de 120 min</option>
-                </select>
+
+            <Col xs={12} md={6}>
+              <label className="buscador-field-label">Año hasta</label>
+              <input
+                type="number"
+                name="anioMax"
+                className="buscador-input" 
+                value={filtros.anioMax}
+                onChange={handleChange}
+                min="1800" 
+                max={new Date().getFullYear().toString()} 
+                placeholder="Ej: 2023"
+              />
             </Col>
-            <Col xs={12} md={4}>
-                <label className="buscador-field-label">Año</label>
-                <select
-                    name="anio"
-                    className="buscador-select"
-                    onChange={handleChange}
-                    value={filtros.anio}
-                >
-                <option value="">Todos</option>
-                <option value="2024-2025">2024 – 2025</option>
-                <option value="2010-2023">2010 – 2023</option>
-                <option value="2000-2009">2000 – 2009</option>
-                <option value="clasicos">Clásicos</option>
-                </select>
+          </Row>
+
+          <Row className="mb-4">
+            <Col xs={12}>
+              <label className="buscador-field-label">
+                Duración máxima ({filtros.duracionMax} min)
+              </label>
+              <div className="buscador-duracion-container">
+                <input
+                  type="range"
+                  name="duracionMax"
+                  className="buscador-slider"
+                  min="75"
+                  max="240"
+                  step="5"
+                  value={filtros.duracionMax}
+                  onChange={handleChange}
+                />
+                <span className="buscador-duracion-valor">{filtros.duracionMax} min</span>
+              </div>
             </Col>
-            </Row>
-            <Button className="buscador-boton" onClick={handleBuscar}>
+          </Row>
+
+          <Row className="mb-4">
+            <Col xs={12}> {/* Puntuación mínima */}
+              <label className="buscador-field-label">
+                Puntuación mínima ({Number(filtros.puntuacionMin).toFixed(1)})
+              </label>
+              <div className="buscador-puntuacion-container">
+                <input
+                  type="range"
+                  name="puntuacionMin"
+                  className="buscador-slider"
+                  min="1"
+                  max="10"
+                  step="0.5"
+                  value={filtros.puntuacionMin}
+                  onChange={handleChange}
+                />
+                <span className="buscador-puntuacion-valor">
+                  {Number(filtros.puntuacionMin).toFixed(1)}
+                </span>
+              </div>
+            </Col>
+          </Row>
+
+          <Row className="mb-4">
+            <Col xs={12} md={6}>
+              <label className="buscador-field-label">Votos mínimos</label>
+              <select
+                name="votosMin"
+                className="buscador-select"
+                value={filtros.votosMin}
+                onChange={handleChange}
+              >
+                <option value="">Sin restricción</option>
+                <option value="100">100+</option>
+                <option value="500">500+</option>
+                <option value="1000">1000+</option>
+                <option value="5000">5000+</option>
+              </select>
+            </Col>
+
+            <Col xs={12} md={6}> {/* Plataforma */}
+              <label className="buscador-field-label">Plataforma</label>
+              <select
+                name="plataforma"
+                className="buscador-select"
+                value={filtros.plataforma}
+                onChange={handleChange}
+              >
+                {platformOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </Col>
+          </Row>
+
+          <Button variant="secondary" className="buscador-boton" onClick={handleBuscar}>
             Buscar recomendaciones
-            </Button>
+          </Button>
         </div>
-        </Container>
+      </Container>
     </section>
-    );
+  );
 };
 
 export default BuscadorPeliculas;
+
