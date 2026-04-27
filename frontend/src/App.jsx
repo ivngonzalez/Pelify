@@ -5,9 +5,9 @@ import Footer from './components/Footer/Footer';
 import SeccionBienvenida from './components/SeccionBienvenida/SeccionBienvenida';
 import BuscadorPeliculas from './components/BuscadorPeliculas/BuscadorPeliculas';
 import TarjetasPelicula from './components/TarjetasPelicula/TarjetasPelicula';
-import Perfil from './components/Perfil/Perfil';
-import Login from './components/Login/Login';
-import Registro from './components/Registro/Registro';
+import Perfil from './pages/Perfil/Perfil';
+import Login from './pages/Login/Login';
+import Registro from './pages/Registro/Registro';
 import { 
   getPeliculasPopulares, 
   getProximosLanzamientos, 

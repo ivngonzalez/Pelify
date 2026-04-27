@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import '../Login/Login.css'; // Reutilizamos los estilos del Login
+import '../Login/Login.css'; 
 
 const Registro = () => {
   const [nombre, setNombre] = useState('');
