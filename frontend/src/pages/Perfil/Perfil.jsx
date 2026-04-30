@@ -1,26 +1,34 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Importamos el hook para navegar
+import { useNavigate } from 'react-router-dom';
+import api from '../../api';
 import './Perfil.css';
 
-const Perfil = () => {
-  const navigate = useNavigate(); // Inicializamos la función de navegación
+// Cambiamos el nombre a 'user' para que coincida con lo que envías desde App.jsx
+const Perfil = ({ user, setUser }) => { 
+  const navigate = useNavigate();
 
-  // Datos de ejemplo
-  const usuario = {
-    nombre: "Esteban",
-    email: "esteban@ejemplo.com",
-    miembroDesde: "Enero 2024",
-    favoritas: 12,
-    vistas: 45
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout');
+      setUser(null);
+      navigate('/');
+    } catch (error) {
+      console.error("Error al cerrar sesión", error);
+    }
   };
 
-  const handleLogout = () => {
-    // Aquí más adelante borrarás el Token o la sesión del LocalStorage
-    console.log("Cerrando sesión...");
-    
-    // Redirigir al Login
-    navigate('/login');
-  };
+  // --- SOLUCIÓN AL ERROR ---
+  // Si 'user' es null o undefined, mostramos un mensaje de carga en lugar de romper la app
+  if (!user) {
+    return (
+      <div className="container my-5 text-center">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+        <p className="mt-3">Cargando perfil o sesión no iniciada...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="perfil-container container my-5">
@@ -29,11 +37,12 @@ const Perfil = () => {
           <div className="card-perfil p-4 shadow-lg">
             <div className="d-flex align-items-center mb-4">
               <div className="avatar-placeholder me-4">
-                {usuario.nombre.charAt(0)}
+                {/* Usamos el nombre que venga del backend (username o nombre) */}
+                {(user.username || user.nombre || "U").charAt(0)}
               </div>
               <div>
-                <h2 className="text-acento mb-0">{usuario.nombre}</h2>
-                <p className="text-secondary">{usuario.email}</p>
+                <h2 className="text-acento mb-0">{user.username || user.nombre}</h2>
+                <p className="text-secondary">{user.email}</p>
               </div>
             </div>
 
@@ -41,11 +50,12 @@ const Perfil = () => {
 
             <div className="row text-center my-4">
               <div className="col-4">
-                <h4 className="fw-bold">{usuario.favoritas}</h4>
+                {/* Añadimos || 0 para que no falle si el campo no existe aún */}
+                <h4 className="fw-bold">{user.favoritas || 0}</h4>
                 <p className="text-secondary small">Favoritas</p>
               </div>
               <div className="col-4 border-start border-end border-secondary">
-                <h4 className="fw-bold">{usuario.vistas}</h4>
+                <h4 className="fw-bold">{user.vistas || 0}</h4>
                 <p className="text-secondary small">Vistas</p>
               </div>
               <div className="col-4">
@@ -58,7 +68,7 @@ const Perfil = () => {
               <h5 className="mb-3">Información de la cuenta</h5>
               <div className="d-flex justify-content-between mb-2">
                 <span>Miembro desde:</span>
-                <span className="text-acento">{usuario.miembroDesde}</span>
+                <span className="text-acento">{user.miembroDesde || 'Reciente'}</span>
               </div>
               
               <div className="d-flex flex-column gap-2 mt-4">
@@ -66,7 +76,6 @@ const Perfil = () => {
                   Editar Perfil
                 </button>
                 
-                {/* BOTÓN DE CERRAR SESIÓN */}
                 <button 
                   className="btn btn-danger w-100" 
                   onClick={handleLogout}

@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../api';
 import './Login.css';
-
-const Login = () => {
+const Login = ({ setUser }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Iniciando sesión con:", email, password);
-    // Aquí irá tu lógica de conexión con el backend más adelante
+    try {
+        const response = await api.post('/auth/login', { email, password });
+        if (response.data === "Login exitoso") {
+            const userResponse = await api.get('/auth/me');
+            setUser(userResponse.data); 
+            
+            navigate('/perfil'); 
+        }
+    } catch (error) {
+        console.error("Login fallido", error);
+    }
   };
 
   return (
@@ -24,7 +34,7 @@ const Login = () => {
                 <p className="text-secondary">Inicia sesión para continuar</p>
               </div>
 
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Correo electrónico</Form.Label>
                   <Form.Control 

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import api from './api';
 import Navegacion from './components/Navegacion/Nav';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home'; 
@@ -10,10 +11,27 @@ import DetallesPelicula from './pages/DetallesPelicula/DetallesPelicula';
 import ResultadosBusqueda from './pages/ResultadosBusqueda/ResultadosBusqueda'; 
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/auth/me')
+      .then(res => {
+        setUser(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setUser(null);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <div className="text-center mt-5">Iniciando sesión...</div>;
+
   return (
     <div className="d-flex flex-column min-vh-100">
       {/* La navegación se mantiene presente en todas las páginas */}
-      <Navegacion />
+      <Navegacion user={user}/>
 
       <main className="flex-grow-1">
         <Routes>
@@ -27,10 +45,10 @@ function App() {
           <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
 
           {/* RUTA DE PERFIL DE USUARIO */}
-          <Route path="/perfil" element={<Perfil />} />
+          <Route path="/perfil" element={<Perfil user={user} setUser={setUser} />} />
 
           {/* RUTA DE INICIO DE SESIÓN */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
 
           {/* RUTA DE REGISTRO DE NUEVO USUARIO */}
           <Route path="/registro" element={<Registro />} />

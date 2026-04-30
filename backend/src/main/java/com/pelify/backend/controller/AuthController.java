@@ -47,6 +47,14 @@ public class AuthController {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
     }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return ResponseEntity.ok("Sesión cerrada");
+    }
     @GetMapping("/me")
     public ResponseEntity<?> getMe(Authentication auth) {
         if (auth == null) return ResponseEntity.status(401).build();
