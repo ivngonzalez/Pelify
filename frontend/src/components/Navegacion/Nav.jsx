@@ -45,9 +45,9 @@ const Navegacion = ({ user }) => {
         <div className="d-flex align-items-center d-lg-none">
           <Link to={user ? "/perfil" : "/login"} className="nav-avatar me-2 text-decoration-none text-white d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: user ? '#e50914' : '#333' }}>
             {user ? (
-               <span className="fw-bold">{user.username?.charAt(0).toUpperCase()}</span>
+                <span className="fw-bold">{user.username?.charAt(0).toUpperCase()}</span>
             ) : (
-               <FontAwesomeIcon icon={faUser} />
+                <FontAwesomeIcon icon={faUser} />
             )}
           </Link>
           <Navbar.Toggle aria-controls="nav-contenido-principal" className="border-0 shadow-none" />

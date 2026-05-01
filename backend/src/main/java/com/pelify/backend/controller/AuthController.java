@@ -36,10 +36,8 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
             );
 
-            // 1. Establecemos la autenticación en el contexto
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            // 2. IMPORTANTE: Guardamos el contexto en la sesión para que genere la Cookie
             securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
 
             return ResponseEntity.ok("Login exitoso");
@@ -57,7 +55,12 @@ public class AuthController {
     }
     @GetMapping("/me")
     public ResponseEntity<?> getMe(Authentication auth) {
-        if (auth == null) return ResponseEntity.status(401).build();
-        return ResponseEntity.ok(userRepository.findByEmail(auth.getName()));
+        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return userRepository.findByEmail(auth.getName())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(404).build());
     }
 }
