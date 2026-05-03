@@ -15,18 +15,26 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/auth/me')
-      .then(res => {
-        setUser(res.data);
-        setLoading(false);
-      })
-      .catch(() => {
-        setUser(null);
-        setLoading(false);
-      });
+    const checkAuth = setTimeout(() => {
+      api.get('/auth/me')
+        .then(res => {
+          if (res.status === 200) {
+            setUser(res.data);
+          } else {
+            setUser(null);
+          }
+          setLoading(false);
+        })
+        .catch(() => {
+          setUser(null);
+          setLoading(false);
+        });
+    }, 100);
+
+    return () => clearTimeout(checkAuth); 
   }, []);
 
-  if (loading) return <div className="text-center mt-5">Iniciando sesión...</div>;
+  if (loading) return <div className="text-center mt-5">Cargando Pelify...</div>;
 
   return (
     <div className="d-flex flex-column min-vh-100">

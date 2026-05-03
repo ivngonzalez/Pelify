@@ -55,7 +55,6 @@ const Navegacion = ({ user }) => {
 
         <Navbar.Collapse id="nav-contenido-principal">
           <Nav className="ms-auto align-items-center">
-            {/* Buscador móvil... (lo dejamos igual) */}
             <div className="d-lg-none w-100 mb-3 mt-2">
               <InputGroup className="nav-search-input-group">
                 <FormControl
@@ -74,7 +73,6 @@ const Navegacion = ({ user }) => {
             <Nav.Link as={Link} to="/" className="nav-enlace">Inicio</Nav.Link>
             <Nav.Link as={Link} to={user ? "/mi-lista" : "/login"} className="nav-enlace">Mi lista</Nav.Link>
 
-            {/* --- AVATAR ESCRITORIO --- */}
             <Link 
               to={user ? "/perfil" : "/login"} 
               className="nav-avatar ms-lg-3 d-none d-lg-flex text-decoration-none text-white align-items-center justify-content-center"
@@ -82,7 +80,7 @@ const Navegacion = ({ user }) => {
                 width: '40px', 
                 height: '40px', 
                 borderRadius: '50%', 
-                backgroundColor: user ? '#e50914' : '#333', // Rojo si está logueado, gris si no
+                backgroundColor: user ? '#e50914' : '#333', 
                 fontSize: '1.1rem'
               }}
             >
