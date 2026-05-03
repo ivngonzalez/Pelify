@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import api from './api';
 import Navegacion from './components/Navegacion/Nav';
 import Footer from './components/Footer/Footer';
@@ -53,7 +53,10 @@ function App() {
           <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
 
           {/* RUTA DE PERFIL DE USUARIO */}
-          <Route path="/perfil" element={<Perfil user={user} setUser={setUser} />} />
+          <Route 
+            path="/perfil" 
+            element={user ? <Perfil user={user} setUser={setUser} /> : <Navigate to="/login" />} 
+          />
 
           {/* RUTA DE INICIO DE SESIÓN */}
           <Route path="/login" element={<Login setUser={setUser} />} />
