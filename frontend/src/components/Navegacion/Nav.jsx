@@ -84,7 +84,8 @@ const Navegacion = () => {
               </InputGroup>
             </div>
             <Nav.Link as={Link} to="/" className="nav-enlace">Inicio</Nav.Link>
-            <Nav.Link href="#mi-lista" className="nav-enlace">Mi lista</Nav.Link>
+
+            <Nav.Link as={Link} to="/mi-lista" className="nav-enlace">Mi Lista</Nav.Link>
 
             <Link to="/perfil" className="nav-avatar ms-lg-3 d-none d-lg-flex text-decoration-none text-white">
               <FontAwesomeIcon icon={faUser} />

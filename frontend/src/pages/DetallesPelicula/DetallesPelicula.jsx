@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Badge, Modal, Spinner } from 'react-bootstrap';
 import { getPeliculaDetalle, TMDB_IMG } from '../../services/tmdbService';

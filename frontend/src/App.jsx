@@ -5,7 +5,9 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/Home/Home'; // Import the new Home component
 import Perfil from './pages/Perfil/Perfil';
 import DetallesPelicula from './pages/DetallesPelicula/DetallesPelicula';
-import ResultadosBusqueda from './pages/ResultadosBusqueda/ResultadosBusqueda'; 
+import ResultadosBusqueda from './pages/ResultadosBusqueda/ResultadosBusqueda';
+import MiLista from './pages/MiLista/MiLista'; // Ajusta la ruta según tu carpeta real
+
 
 function App() {
   return (
@@ -25,6 +27,9 @@ function App() {
 
           {/* VISTA DE RESULTADOS DE BÚSQUEDA */}
           <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
+
+          {/* VISTA DE MI LISTA */}
+          <Route path="/mi-lista" element={<MiLista />} />
 
           {/* Puedes agregar una ruta para "No encontrado" aquí */}
         </Routes>
