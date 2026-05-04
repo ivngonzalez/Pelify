@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import api from '../../api';
 import { Link, useNavigate } from 'react-router-dom';
 import '../Login/Login.css'; 
 
@@ -11,24 +12,34 @@ const Registro = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
 
-    // Validación básica
-    if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      return;
-    }
+  if (password !== confirmPassword) {
+    setError('Las contraseñas no coinciden');
+    return;
+  }
 
-    console.log("Registrando usuario:", { nombre, email, password });
-    
-    // Aquí conectarás con tu backend de Java para guardar el usuario
-    
-    // Simulamos registro exitoso y redirigimos al login
-    alert('Usuario registrado con éxito. Ya puedes iniciar sesión.');
+  try {
+    // IMPORTANTE: Usa los nombres de las variables de tu clase Java
+    await api.post('/auth/register', {
+      username: nombre,  // Mapea a 'private String username' en Java
+      password: password, // Mapea a 'private String password' en Java
+      email: email        // Mapea a 'private String email' en Java
+    });
+
+    alert('¡Usuario registrado con éxito!');
     navigate('/login');
-  };
+    
+  } catch (err) {
+    // Si el backend devuelve un string, lo mostramos; si no, un error genérico
+    const mensaje = typeof err.response?.data === 'string' 
+      ? err.response.data 
+      : 'Error al registrar el usuario';
+    setError(mensaje);
+  }
+};
 
   return (
     <Container className="login-container d-flex align-items-center justify-content-center">
