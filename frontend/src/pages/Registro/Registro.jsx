@@ -40,10 +40,9 @@ const Registro = () => {
     return;
   }
 
-  // VALIDACIONES DE FORMATO (Las que ya tenías)[cite: 4]
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email.trim())) {
-    setError('Por favor, introduce un correo electrónico válido.');
+    setError('El correo electrónico debe de ser válido.');
     return;
   }
 
@@ -57,7 +56,6 @@ const Registro = () => {
     return;
   }
 
-  // Si pasa todo lo anterior, procedemos con el envío[cite: 4, 5]
   setCargando(true);
   try {
     await api.post('/auth/register', {
@@ -84,7 +82,6 @@ const Registro = () => {
                 <p className="text-secondary">Crea tu cuenta gratis</p>
               </div>
 
-              {/* Mensaje de error dinámico en pantalla */}
               {error && (
                 <Alert variant="danger" className="py-2 small text-center">
                   {error}
@@ -106,7 +103,6 @@ const Registro = () => {
                 <Form.Group className="mb-3">
                   <Form.Label>Correo electrónico</Form.Label>
                   <Form.Control 
-                    type="email" 
                     placeholder="ejemplo@pelify.com" 
                     className="input-custom"
                     value={email}
@@ -142,9 +138,8 @@ const Registro = () => {
                 </Row>
 
                 <Button 
-                  variant="acento" 
                   type="submit" 
-                  className="w-100 fw-bold mb-3 py-2 btn-acento"
+                  className="btn-acento w-100 fw-bold mb-3 py-2"
                   disabled={cargando}
                 >
                   {cargando ? 'Registrando...' : 'Registrarse'}

@@ -38,12 +38,11 @@ const Login = ({ setUser }) => {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Correo electrónico</Form.Label>
                   <Form.Control 
-                    type="email" 
+                    type="text" 
                     placeholder="ejemplo@pelify.com" 
                     className="input-custom"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                   />
                 </Form.Group>
 
@@ -59,7 +58,7 @@ const Login = ({ setUser }) => {
                   />
                 </Form.Group>
 
-                <Button variant="acento" type="submit" className="w-100 fw-bold mb-3 py-2">
+                <Button type="submit" className="btn-acento w-100 fw-bold mb-3 py-2">
                   Entrar
                 </Button>
               </Form>
