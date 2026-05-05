@@ -25,8 +25,10 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
             return ResponseEntity.ok(userService.registrarUsuario(user));
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error inesperado en el servidor");
         }
     }
     @PostMapping("/login")
