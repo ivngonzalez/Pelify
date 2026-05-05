@@ -1,25 +1,59 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'; 
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../../api';
+import api from '../../api'; 
 import './Login.css';
+
 const Login = ({ setUser }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  const [error, setError] = useState('');
+  const [cargando, setCargando] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!email.trim()) {
+      setError('El correo electrónico es obligatorio.');
+      return;
+    }
+
+    if (!password) {
+      setError('La contraseña es obligatoria.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('Íntroduce un correo electrónico válido.');
+      return;
+    }
+
+    setCargando(true);
+
     try {
-        const response = await api.post('/auth/login', { email, password });
+        const response = await api.post('/auth/login', { 
+            email: email.trim(), 
+            password: password 
+        });
+
         if (response.data === "Login exitoso") {
-            const userResponse = await api.get('/auth/me');
+            const userResponse = await api.get('/auth/me'); 
             setUser(userResponse.data); 
-            
             navigate('/perfil'); 
         }
-    } catch (error) {
-        console.error("Login fallido", error);
+    } catch (err) {
+        if (err.response?.status === 401) {
+            setError('Credenciales incorrectas. Revisa tu correo y contraseña.');
+        } else {
+            setError('Hubo un problema al conectar con el servidor.');
+        }
+        console.error("Login fallido", err);
+    } finally {
+        setCargando(false); 
     }
   };
 
@@ -34,11 +68,17 @@ const Login = ({ setUser }) => {
                 <p className="text-secondary">Inicia sesión para continuar</p>
               </div>
 
-              <Form onSubmit={handleLogin}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+              {error && (
+                <Alert variant="danger" className="py-2 small text-center">
+                  {error}
+                </Alert>
+              )}
+
+              <Form onSubmit={handleLogin} noValidate>
+                <Form.Group className="mb-3">
                   <Form.Label>Correo electrónico</Form.Label>
                   <Form.Control 
-                    type="text" 
+                    type="email" 
                     placeholder="ejemplo@pelify.com" 
                     className="input-custom"
                     value={email}
@@ -46,7 +86,7 @@ const Login = ({ setUser }) => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-4" controlId="formBasicPassword">
+                <Form.Group className="mb-4">
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control 
                     type="password" 
@@ -54,12 +94,15 @@ const Login = ({ setUser }) => {
                     className="input-custom"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required
                   />
                 </Form.Group>
 
-                <Button type="submit" className="btn-acento w-100 fw-bold mb-3 py-2">
-                  Entrar
+                <Button 
+                  type="submit" 
+                  className="btn-acento w-100 fw-bold mb-3 py-2"
+                  disabled={cargando}
+                >
+                  {cargando ? 'Iniciando sesión...' : 'Entrar'}
                 </Button>
               </Form>
 
