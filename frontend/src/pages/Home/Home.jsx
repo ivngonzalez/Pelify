@@ -9,7 +9,7 @@ import {
   getMejorValoradas 
 } from '../../services/tmdbService';
 
-function Home() {
+function Home( { user }) {
   const [peliculaDestacada, setPeliculaDestacada] = useState(null);
 
   useEffect(() => {
@@ -28,18 +28,22 @@ function Home() {
       <TarjetasPelicula 
         titulo="Películas Populares" 
         fetchFunction={getPeliculasPopulares} 
+        user={user}
       />
       <TarjetasPelicula 
         titulo="Próximos Lanzamientos" 
         fetchFunction={getProximosLanzamientos} 
+        user={user}
       />
       <TarjetasPelicula 
         titulo="Tendencias de la Semana" 
         fetchFunction={getTendenciasSemana} 
+        user={user}
       />
       <TarjetasPelicula 
         titulo="Mejor Valoradas" 
         fetchFunction={getMejorValoradas} 
+        user={user}
       />
     </>
   );

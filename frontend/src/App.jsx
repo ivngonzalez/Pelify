@@ -44,7 +44,7 @@ function App() {
       <main className="flex-grow-1">
         <Routes>
           {/* VISTA DE INICIO */}
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home user={user} />} />
 
           {/* VISTA DE DETALLE DE PELÍCULA */}
           <Route path="/pelicula/:id" element={<DetallesPelicula />} />

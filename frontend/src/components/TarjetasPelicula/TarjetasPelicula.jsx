@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user }) => {
   const [peliculas, setPeliculas] = useState(initialMovies || []);
   const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction); 
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let active = true; 
@@ -16,7 +17,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
     if (fetchFunction && !initialMovies && peliculas.length === 0) {
       const fetchData = async () => {
         if (active) {
-            setCargando(true);
+          setCargando(true);
         }
         try {
           const data = await fetchFunction();
@@ -35,7 +36,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
     }
 
     return () => {
-      active = false; // Cleanup to prevent memory leaks and state updates on unmounted components
+      active = false; 
     };
   }, [fetchFunction, initialMovies, peliculas.length]);
 
@@ -44,6 +45,17 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
     if (current) {
       const scrollAmount = direction === 'left' ? -600 : 600;
       current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleAddToList = (e, pelicula) => {
+    e.preventDefault(); 
+    
+    if (!user) {
+      navigate('/perfil');
+    } else {
+      console.log("Añadiendo a la lista de:", user.username, pelicula.title);
+      alert(`"${pelicula.title}" se añadirá a tu lista pronto.`);
     }
   };
 
@@ -86,7 +98,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
                       : <div className="tarjeta-sin-imagen" />
                     }
                     <span className="tarjeta-score">
-                      ★ {pelicula.vote_average.toFixed(1)}
+                      ★ {pelicula.vote_average?.toFixed(1) || 'N/A'}
                     </span>
                   </div>
                 </Link>
@@ -97,7 +109,12 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies }) => {
                   <p className="tarjeta-meta">
                     {pelicula.genre_ids && pelicula.genre_ids.length > 0 ? 'Cine' : '—'} · {pelicula.release_date?.slice(0, 4)}
                   </p>
-                  <button className="tarjeta-boton">+ Mi lista</button>
+                  <button 
+                    className="tarjeta-boton"
+                    onClick={(e) => handleAddToList(e, pelicula)}
+                  >
+                    + Mi lista
+                  </button>
                 </div>
               </div>
             </div>
