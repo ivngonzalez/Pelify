@@ -16,61 +16,60 @@ const Registro = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault(); // Evita el refresco de página
-  setError(''); // Limpia errores previos
+    e.preventDefault(); 
+    setError(''); 
 
-  // VALIDACIONES MANUALES (Para que salgan en tu Alert rojo arriba)
-  if (!nombre.trim()) {
-    setError('El nombre de usuario es obligatorio.');
-    return;
-  }
+    if (!nombre.trim()) {
+      setError('El nombre de usuario es obligatorio.');
+      return;
+    }
 
-  if (!email.trim()) {
-    setError('El correo electrónico es obligatorio.');
-    return;
-  }
+    if (!email.trim()) {
+      setError('El correo electrónico es obligatorio.');
+      return;
+    }
 
-  if (!password) {
-    setError('La contraseña es obligatoria.');
-    return;
-  }
+    if (!password) {
+      setError('La contraseña es obligatoria.');
+      return;
+    }
 
-  if (!confirmPassword) {
-    setError('Debes confirmar la contraseña.');
-    return;
-  }
+    if (!confirmPassword) {
+      setError('Debes confirmar la contraseña.');
+      return;
+    }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email.trim())) {
-    setError('El correo electrónico debe de ser válido.');
-    return;
-  }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('El correo electrónico debe de ser válido.');
+      return;
+    }
 
-  if (password.length < 6) {
-    setError('La contraseña debe tener al menos 6 caracteres.');
-    return;
-  }
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
 
-  if (password !== confirmPassword) {
-    setError('Las contraseñas no coinciden.');
-    return;
-  }
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return;
+    }
 
-  setCargando(true);
-  try {
-    await api.post('/auth/register', {
-      username: nombre.trim(),
-      email: email.trim(),
-      password: password
-    });
-    navigate('/login', { state: { message: '¡Cuenta creada! Ya puedes entrar.' } });
-  } catch (err) {
-    const mensaje = err.response?.data || 'El correo o el usuario ya están en uso.';
-    setError(mensaje);
-  } finally {
-    setCargando(false);
-  }
-};
+    setCargando(true);
+    try {
+      await api.post('/auth/register', {
+        username: nombre.trim(),
+        email: email.trim(),
+        password: password
+      });
+      navigate('/login', { state: { message: '¡Cuenta creada! Ya puedes entrar.' } });
+    } catch (err) {
+      const mensaje = err.response?.data || 'El correo o el usuario ya están en uso.';
+      setError(mensaje);
+    } finally {
+      setCargando(false);
+    }
+  };
   return (
     <Container className="login-container d-flex align-items-center justify-content-center">
       <Row className="w-100 justify-content-center">

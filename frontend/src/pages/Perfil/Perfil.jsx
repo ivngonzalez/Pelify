@@ -11,14 +11,12 @@ const Perfil = ({ user, setUser }) => {
     try {
       await api.post('/auth/logout');
       setUser(null);
-      navigate('/');
+      navigate('/login', { state: { message: 'Has cerrado sesión correctamente.' } });
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     }
   };
 
-  // --- SOLUCIÓN AL ERROR ---
-  // Si 'user' es null o undefined, mostramos un mensaje de carga en lugar de romper la app
   if (!user) {
     return (
       <div className="container my-5 text-center">

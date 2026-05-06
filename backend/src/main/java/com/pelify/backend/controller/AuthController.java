@@ -1,8 +1,11 @@
 package com.pelify.backend.controller;
+
 import com.pelify.backend.dto.LoginRequest;
+import com.pelify.backend.dto.RegisterRequest; 
 import com.pelify.backend.model.User;
 import com.pelify.backend.service.UserService;
 import com.pelify.backend.repository.UserRepository;
+import jakarta.validation.Valid; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -14,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,8 +26,13 @@ public class AuthController {
     @Autowired private UserRepository userRepository;
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) { 
         try {
+            User user = new User();
+            user.setUsername(req.getUsername().trim());
+            user.setEmail(req.getEmail().trim().toLowerCase()); 
+            user.setPassword(req.getPassword());
+
             return ResponseEntity.ok(userService.registrarUsuario(user));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

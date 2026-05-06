@@ -10,10 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // Esto permite usar @PreAuthorize("hasRole('ADMIN')") en el futuro
+@EnableMethodSecurity 
 public class SecurityConfig {
 
     @Bean
@@ -39,11 +40,9 @@ public class SecurityConfig {
             )
 
             .authorizeHttpRequests(auth -> auth
-                    // Todo el mundo puede registrarse y loguearse
-                    .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-
-                    // Cualquier otra ruta requiere estar autenticado
-                    .anyRequest().authenticated()
+                .requestMatchers("/api/auth/**").permitAll() 
+                .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN") 
+                .anyRequest().authenticated()
             )
 
             // Logout
