@@ -1,0 +1,21 @@
+.mi-lista-page {
+    background-color: var(--fondo);
+    min-height: 100vh;
+    padding-top: 120px; /* Suficiente espacio para tu Nav que es alto */
+    color: var(--texto);
+}
+
+.mi-lista-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    border-left: 5px solid var(--acento);
+    padding-left: 20px;
+}
+
+.mi-lista-header h1 {
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: var(--texto);
+    margin: 0;
+}

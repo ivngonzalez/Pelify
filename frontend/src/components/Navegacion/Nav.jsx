@@ -69,18 +69,18 @@ const Navegacion = ({ user }) => {
                 </Button>
               </InputGroup>
             </div>
-            
+
             <Nav.Link as={Link} to="/" className="nav-enlace">Inicio</Nav.Link>
             <Nav.Link as={Link} to={user ? "/mi-lista" : "/login"} className="nav-enlace">Mi lista</Nav.Link>
 
-            <Link 
-              to={user ? "/perfil" : "/login"} 
+            <Link
+              to={user ? "/perfil" : "/login"}
               className="nav-avatar ms-lg-3 d-none d-lg-flex text-decoration-none text-white align-items-center justify-content-center"
-              style={{ 
-                width: '40px', 
-                height: '40px', 
-                borderRadius: '50%', 
-                backgroundColor: user ? '#e50914' : '#333', 
+              style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                backgroundColor: user ? '#e50914' : '#333',
                 fontSize: '1.1rem'
               }}
             >

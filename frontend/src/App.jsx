@@ -3,7 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import api from './api';
 import Navegacion from './components/Navegacion/Nav';
 import Footer from './components/Footer/Footer';
-import Home from './pages/Home/Home'; 
+import Home from './pages/Home/Home';
+import MiLista from './pages/MiLista/MiLista';
 import Perfil from './pages/Perfil/Perfil';
 import Login from './pages/Login/Login';
 import Registro from './pages/Registro/Registro';
@@ -31,7 +32,7 @@ function App() {
         });
     }, 100);
 
-    return () => clearTimeout(checkAuth); 
+    return () => clearTimeout(checkAuth);
   }, []);
 
   if (loading) return <div className="text-center mt-5">Cargando Pelify...</div>;
@@ -53,9 +54,9 @@ function App() {
           <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
 
           {/* RUTA DE PERFIL DE USUARIO */}
-          <Route 
-            path="/perfil" 
-            element={user ? <Perfil user={user} setUser={setUser} /> : <Navigate to="/login" />} 
+          <Route
+            path="/perfil"
+            element={user ? <Perfil user={user} setUser={setUser} /> : <Navigate to="/login" />}
           />
 
           {/* RUTA DE INICIO DE SESIÓN */}
@@ -63,6 +64,9 @@ function App() {
 
           {/* RUTA DE REGISTRO DE NUEVO USUARIO */}
           <Route path="/registro" element={<Registro />} />
+
+            {/* VISTA DE MI LISTA */}
+            <Route path="/mi-lista" element={<MiLista />} />
         </Routes>
       </main>
 
