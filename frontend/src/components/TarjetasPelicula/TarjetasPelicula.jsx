@@ -1,42 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, ocultarBotonLista = false }) => {
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, ocultarBotonLista = false }) => {
   const [peliculas, setPeliculas] = useState(initialMovies || []);
   const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction);
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let active = true;
 
     if (fetchFunction && !initialMovies && peliculas.length === 0) {
       const fetchData = async () => {
-        if (active) {
-          setCargando(true);
-        }
+        if (active) setCargando(true);
         try {
           const data = await fetchFunction();
-          if (active) {
-            setPeliculas(data);
-          }
+          if (active) setPeliculas(data);
         } catch (err) {
           console.error("Error cargando peliculas:", err);
         } finally {
-          if (active) {
-            setCargando(false);
-          }
+          if (active) setCargando(false);
         }
       };
       fetchData();
     }
 
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, [fetchFunction, initialMovies, peliculas.length]);
 
   const scroll = (direction) => {
@@ -44,6 +37,16 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, oculta
     if (current) {
       const scrollAmount = direction === 'left' ? -600 : 600;
       current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleAddToList = (e, pelicula) => {
+    e.preventDefault();
+    if (!user) {
+      navigate('/perfil');
+    } else {
+      console.log("Añadiendo a la lista de:", user.username, pelicula.title);
+      alert(`"${pelicula.title}" se añadirá a tu lista pronto.`);
     }
   };
 
@@ -63,11 +66,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, oculta
         <Container fluid className="position-relative slider-wrapper">
           <p className="tarjetas-label">{titulo}</p>
 
-          <button
-              className="slider-control left"
-              onClick={() => scroll('left')}
-              aria-label="Desplazar a la izquierda"
-          >
+          <button className="slider-control left" onClick={() => scroll('left')} aria-label="Desplazar">
             <ChevronLeft size={24} />
           </button>
 
@@ -77,9 +76,8 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, oculta
                   <div className="tarjeta">
                     <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-link">
                       <div className="tarjeta-imagen">
-                        {pelicula.poster_path
-                            ? <img
-                                /* Esta lógica elimina barras dobles y asegura que la URL sea válida */
+                        {pelicula.poster_path ? (
+                            <img
                                 src={
                                   pelicula.poster_path.startsWith('http')
                                       ? pelicula.poster_path
@@ -89,27 +87,33 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, oculta
                                 className="tarjeta-poster"
                                 onError={(e) => {
                                   e.target.onerror = null;
-                                  e.target.src = 'https://via.placeholder.com/500x750?text=No+Image';
+                                  e.target.src = 'https://via.placeholder.com/500x750?text=Sin+Imagen';
                                 }}
                             />
-                            : <div className="tarjeta-sin-imagen"/>
-                        }
+                        ) : (
+                            <div className="tarjeta-sin-imagen" />
+                        )}
                         <span className="tarjeta-score">
                       ★ {pelicula.vote_average?.toFixed(1) || '0.0'}
                     </span>
                       </div>
                     </Link>
+
                     <div className="tarjeta-info">
                       <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-titulo-link">
                         <p className="tarjeta-titulo">{pelicula.title}</p>
                       </Link>
                       <p className="tarjeta-meta">
-                        {pelicula.genre_ids && pelicula.genre_ids.length > 0 ? 'Cine' : 'Película'} · {pelicula.release_date?.slice(0, 4)}
+                        {pelicula.genre_ids?.length > 0 ? 'Cine' : 'Película'} · {pelicula.release_date?.slice(0, 4) || 's/f'}
                       </p>
 
-                      {/* El botón solo se muestra si ocultarBotonLista es false */}
                       {!ocultarBotonLista && (
-                          <button className="tarjeta-boton">+ Mi lista</button>
+                          <button
+                              className="tarjeta-boton"
+                              onClick={(e) => handleAddToList(e, pelicula)}
+                          >
+                            + Mi lista
+                          </button>
                       )}
                     </div>
                   </div>
@@ -117,11 +121,7 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, oculta
             ))}
           </div>
 
-          <button
-              className="slider-control right"
-              onClick={() => scroll('right')}
-              aria-label="Desplazar a la derecha"
-          >
+          <button className="slider-control right" onClick={() => scroll('right')} aria-label="Desplazar">
             <ChevronRight size={24} />
           </button>
         </Container>

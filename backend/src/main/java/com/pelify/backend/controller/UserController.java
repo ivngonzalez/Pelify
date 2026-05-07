@@ -15,18 +15,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Obtener todos los usuarios: GET http://localhost:8080/api/users
     @GetMapping
     public List<User> obtenerTodos() {
         return userService.obtenerTodos();
-    }
-
-    // Crear un usuario: POST http://localhost:8080/api/users
-    // El cuerpo del JSON debe ser algo como:
-    // { "username": "pepe", "password": "123", "email": "pepe@mail.com", "role": "USER" }
-    @PostMapping
-    public ResponseEntity<User> registrarUsuario(@RequestBody User user) {
-        User nuevoUser = userService.registrarUsuario(user);
-        return ResponseEntity.ok(nuevoUser);
     }
 }

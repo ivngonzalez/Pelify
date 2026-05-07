@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../../api'; 
 import '../Login/Login.css'; 
 
 const Registro = () => {
@@ -8,28 +9,67 @@ const Registro = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  
   const [error, setError] = useState('');
+  const [cargando, setCargando] = useState(false);
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    setError(''); 
 
-    // Validación básica
-    if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+    if (!nombre.trim()) {
+      setError('El nombre de usuario es obligatorio.');
       return;
     }
 
-    console.log("Registrando usuario:", { nombre, email, password });
-    
-    // Aquí conectarás con tu backend de Java para guardar el usuario
-    
-    // Simulamos registro exitoso y redirigimos al login
-    alert('Usuario registrado con éxito. Ya puedes iniciar sesión.');
-    navigate('/login');
-  };
+    if (!email.trim()) {
+      setError('El correo electrónico es obligatorio.');
+      return;
+    }
 
+    if (!password) {
+      setError('La contraseña es obligatoria.');
+      return;
+    }
+
+    if (!confirmPassword) {
+      setError('Debes confirmar la contraseña.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('El correo electrónico debe de ser válido.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return;
+    }
+
+    setCargando(true);
+    try {
+      await api.post('/auth/register', {
+        username: nombre.trim(),
+        email: email.trim(),
+        password: password
+      });
+      navigate('/login', { state: { message: '¡Cuenta creada! Ya puedes entrar.' } });
+    } catch (err) {
+      const mensaje = err.response?.data || 'El correo o el usuario ya están en uso.';
+      setError(mensaje);
+    } finally {
+      setCargando(false);
+    }
+  };
   return (
     <Container className="login-container d-flex align-items-center justify-content-center">
       <Row className="w-100 justify-content-center">
@@ -41,36 +81,37 @@ const Registro = () => {
                 <p className="text-secondary">Crea tu cuenta gratis</p>
               </div>
 
-              {error && <div className="alert alert-danger p-2 small">{error}</div>}
+              {error && (
+                <Alert variant="danger" className="py-2 small text-center">
+                  {error}
+                </Alert>
+              )}
 
               <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formBasicNombre">
-                  <Form.Label>Nombre completo</Form.Label>
+                <Form.Group className="mb-3">
+                  <Form.Label>Nombre de usuario</Form.Label>
                   <Form.Control 
                     type="text" 
-                    placeholder="Esteban Pérez" 
+                    placeholder="Tu apodo o nombre" 
                     className="input-custom"
                     value={nombre}
                     onChange={(e) => setNombre(e.target.value)}
-                    required
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3">
                   <Form.Label>Correo electrónico</Form.Label>
                   <Form.Control 
-                    type="email" 
                     placeholder="ejemplo@pelify.com" 
                     className="input-custom"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
                   />
                 </Form.Group>
 
                 <Row>
                   <Col md={6}>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Group className="mb-3">
                       <Form.Label>Contraseña</Form.Label>
                       <Form.Control 
                         type="password" 
@@ -78,28 +119,29 @@ const Registro = () => {
                         className="input-custom"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength={6} // Mínimo de caracteres
                       />
                     </Form.Group>
                   </Col>
                   <Col md={6}>
-                    <Form.Group className="mb-4" controlId="formBasicConfirmPassword">
-                      <Form.Label>Confirmar Contraseña</Form.Label>
+                    <Form.Group className="mb-4">
+                      <Form.Label>Confirmar</Form.Label>
                       <Form.Control 
                         type="password" 
                         placeholder="********" 
                         className="input-custom"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
                       />
                     </Form.Group>
                   </Col>
                 </Row>
 
-                <Button variant="acento" type="submit" className="w-100 fw-bold mb-3 py-2 btn-acento">
-                  Registrarse
+                <Button 
+                  type="submit" 
+                  className="btn-acento w-100 fw-bold mb-3 py-2"
+                  disabled={cargando}
+                >
+                  {cargando ? 'Registrando...' : 'Registrarse'}
                 </Button>
               </Form>
 
