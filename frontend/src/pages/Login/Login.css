@@ -1,52 +1,46 @@
-/* Asegura que el contenedor ocupe al menos el alto de la pantalla */
 .login-container {
     min-height: 80vh;
 }
 
-/* Estilo de la tarjeta de login */
 .login-card {
-    background-color: var(--fondo) !important; /* #272932 de global.css */
+    background-color: var(--fondo-claro) !important; 
     border-radius: 15px;
-    color: var(--texto); /* Asegura texto base blanco */
+    color: var(--texto);
 }
 
-/* El título Pelify en amarillo */
 .text-acento {
-    color: var(--acento) !important; /* #D7CF07 */
+    color: var(--acento) !important; 
 }
 
-/* --- ESTA ES LA SOLUCIÓN AL PROBLEMA DE TEXTO NEGRO --- */
-/* Forzamos a que las etiquetas de Bootstrap sean blancas */
 .login-card label.form-label {
     color: white !important;
 }
-/* -------------------------------------------------------- */
 
-/* Estilo para los inputs */
 .input-custom {
-    background-color: var(--fondo-claro) !important; /* #32353F */
-    border: 1px solid #4a4d5a;
+    background-color: var(--fondo) !important; 
+    border: 1px solid #585858 !important;
+    border-radius: 8px !important;
     color: white !important;
 }
 
-/* Color del placeholder (el texto de ejemplo dentro del input) */
 .input-custom::placeholder {
-    color: #999 !important; /* Un gris medio para el placeholder */
+    color: #999 !important; 
 }
 
-.input-custom:focus {
-    border-color: var(--acento);
-    box-shadow: 0 0 0 0.25 margin-bottom-2px var(--acento);
+.form-control.input-custom:focus {
+    background-color: var(--fondo) !important;
+    border: 1px solid var(--acento) !important;
+    box-shadow: none !important; 
+    outline: 0 !important;
 }
 
-/* Estilo para el botón amarillo */
 .btn-acento {
-    background-color: var(--acento);
-    color: var(--fondo);
-    border: none;
+    background-color: var(--acento) !important;
+    color: var(--fondo) !important;
+    border: none !important;
 }
 
 .btn-acento:hover {
-    background-color: #b5ae05;
-    color: var(--fondo);
+    background-color: #b5ae05 !important;
+    color: var(--fondo) !important;
 }
