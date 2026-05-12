@@ -28,6 +28,11 @@ public class Application {
 			System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
 		}
 
+		// Inyectamos TMDB_API_KEY si existe
+		if (dotenv.get("TMDB_API_KEY") != null) {
+			System.setProperty("TMDB_API_KEY", dotenv.get("TMDB_API_KEY"));
+		}
+
 		SpringApplication.run(Application.class, args);
 	}
 }

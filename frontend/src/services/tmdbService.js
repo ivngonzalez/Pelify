@@ -1,67 +1,65 @@
-const TMDB_KEY = import.meta.env.VITE_TMDB_KEY;
-const TMDB_BASE = 'https://api.themoviedb.org/3';
+import api from '../api'; // Cliente axios que ya configurado para el backend
+
+// URL base para las imágenes de TMDB
 export const TMDB_IMG = 'https://image.tmdb.org/t/p/w500';
 
-const fetchFromTMDB = async (endpoint, params = "") => {
-    const url = `${TMDB_BASE}${endpoint}?api_key=${TMDB_KEY}&language=es-ES&region=ES&page=1${params}`;
-    console.log("Fetching from TMDB URL:", url); 
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log("Raw TMDB results:", data.results);
+/**
+ * Ahora todas las peticiones van al BACKEND
+ * NO al frontend. Esto es mucho más seguro.
+ * 
+ * Ejemplo de flujo:
+ * 1. Frontend llama → api.get('/tmdb/populares')
+ * 2. Backend recibe → /api/tmdb/populares
+ * 3. Backend llama → TMDB API (con API key protegida)
+ * 4. Backend devuelve → los datos al frontend
+ */
 
-    return (data.results || [])
-        .filter(movie => {
-            const lang = movie.original_language;
-            const isAllowedLang = (lang === 'en' || lang === 'es');
-            return isAllowedLang;
-        })
-        .slice(0, 20);
-};
+// GET /api/tmdb/populares
+export const getPeliculasPopulares = () => 
+    api.get('/tmdb/populares').then(res => res.data);
 
-export const getPeliculaDetalle = async (id) => {
-    const res = await fetch(`${TMDB_BASE}/movie/${id}?api_key=${TMDB_KEY}&language=es-ES&append_to_response=credits,videos,watch/providers`);        return await res.json();
-};
+// GET /api/tmdb/proximos-lanzamientos
+export const getProximosLanzamientos = () => 
+    api.get('/tmdb/proximos-lanzamientos').then(res => res.data);
 
-export const getPeliculasPopulares = () => fetchFromTMDB('/movie/popular');
-export const getProximosLanzamientos = () => fetchFromTMDB('/movie/upcoming');
-export const getMejorValoradas = () => fetchFromTMDB('/movie/top_rated');
-export const getEnCartelera = () => fetchFromTMDB('/movie/now_playing');
-export const getTendenciasSemana = () => fetchFromTMDB('/trending/movie/week');
+// GET /api/tmdb/mejor-valoradas
+export const getMejorValoradas = () => 
+    api.get('/tmdb/mejor-valoradas').then(res => res.data);
 
+// GET /api/tmdb/en-cartelera
+export const getEnCartelera = () => 
+    api.get('/tmdb/en-cartelera').then(res => res.data);
+
+// GET /api/tmdb/tendencias-semana
+export const getTendenciasSemana = () => 
+    api.get('/tmdb/tendencias-semana').then(res => res.data);
+
+// GET /api/tmdb/detalle/{id}
+export const getPeliculaDetalle = (id) => 
+    api.get(`/tmdb/detalle/${id}`).then(res => res.data);
+
+/**
+ * Busca películas o descubre con filtros
+ * 
+ * Dos casos:
+ * 1. Si es un string → búsqueda por nombre
+ *    searchMovies("Avengers")
+ * 
+ * 2. Si es un objeto → búsqueda con filtros
+ *    searchMovies({ generos: ["28"], anioMin: 2020 })
+ */
 export const searchMovies = async (queryOrFilters) => {
-    let endpoint = '';
-    let params = '';
-
     if (typeof queryOrFilters === 'string') {
-        endpoint = '/search/movie';
-        params = `&query=${encodeURIComponent(queryOrFilters)}`;
+        // Caso 1: Búsqueda por nombre
+        // GET /api/tmdb/buscar?q=Avengers
+        return api.get('/tmdb/buscar', { params: { q: queryOrFilters } })
+            .then(res => res.data);
     } else if (typeof queryOrFilters === 'object' && queryOrFilters !== null) {
-        endpoint = '/discover/movie';
-
-        const {
-            generos,
-            anioMin,
-            anioMax,
-            duracionMax,
-            puntuacionMin,
-            votosMin,
-            idiomaOriginal,
-            incluirAdultos,
-            plataforma 
-        } = queryOrFilters;
-
-        if (generos && generos.length > 0) params += `&with_genres=${generos.join(',')}`;
-        if (anioMin) params += `&primary_release_date.gte=${anioMin}-01-01`;
-        if (anioMax) params += `&primary_release_date.lte=${anioMax}-12-31`;
-        if (duracionMax) params += `&with_runtime.lte=${duracionMax}`;
-        if (puntuacionMin) params += `&vote_average.gte=${puntuacionMin}`;
-        if (votosMin) params += `&vote_count.gte=${votosMin}`;
-        if (idiomaOriginal) params += `&with_original_language=${idiomaOriginal}`;
-        params += `&include_adult=${incluirAdultos ? 'true' : 'false'}`;
-        if (plataforma) params += `&with_watch_providers=${plataforma}&watch_region=ES`;
-    } else {
-        endpoint = '/movie/popular';
+        // Caso 2: Descubrir con filtros
+        // POST /api/tmdb/descubrir
+        // Body: { generos: ["28"], anioMin: 2020, ... }
+        return api.post('/tmdb/descubrir', queryOrFilters)
+            .then(res => res.data);
     }
-
-    return fetchFromTMDB(endpoint, params);
+    return [];
 };

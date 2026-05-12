@@ -41,6 +41,7 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll() 
+                .requestMatchers("/api/tmdb/**").permitAll()  // Permite acceso público a TMDB
                 .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN") 
                 .anyRequest().authenticated()
             )
