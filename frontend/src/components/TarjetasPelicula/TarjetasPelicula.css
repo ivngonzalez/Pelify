@@ -184,7 +184,7 @@
         padding: 0 15px !important;
     }
     .slider-control {
-        display: none; /* Hide on mobile since they use touch */
+        display: none; 
     }
     .tarjeta-wrapper {
         flex: 0 0 170px;

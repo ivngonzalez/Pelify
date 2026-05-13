@@ -113,114 +113,125 @@ public class TmdbService {
      * Ejemplo: por género, año, duración, puntuación, etc
      */
     public List<Map<String, Object>> descubrirPeliculas(Map<String, Object> filtros) {
+        List<Map<String, Object>> todasLasPeliculas = new ArrayList<>();
         String params = buildDiscoverParams(filtros);
-        return fetchFromTMDB("/discover/movie", params);
+
+        // Realizamos 3 peticiones (páginas 1, 2 y 3) para tener más variedad
+        for (int i = 1; i <= 3; i++) {
+            List<Map<String, Object>> pagina = fetchFromTMDB("/discover/movie", params + "&page=" + i, false);
+            todasLasPeliculas.addAll(pagina);
+        }
+
+        // Filtrar duplicados por ID usando un Set
+        Set<Object> idsVistos = new HashSet<>();
+        return todasLasPeliculas.stream()
+                .filter(movie -> idsVistos.add(movie.get("id")))
+                .toList();
     }
 
     // ========== MÉTODOS PRIVADOS ==========
     // Solo se usan dentro de esta clase
 
     /**
-     * Método genérico para hacer peticiones a TMDB
-     * 
-     * ¿QUÉ HACE?
-     * 1. Construye la URL completa con endpoint + parámetros
-     * 2. Hace la petición HTTP GET
-     * 3. Convierte el JSON a Map
-     * 4. Filtra películas por idioma (español e inglés)
-     * 5. Devuelve máximo 20 resultados
+     * Método genérico para hacer peticiones a TMDB (Por defecto usa región ES)
      */
     private List<Map<String, Object>> fetchFromTMDB(String endpoint, String params) {
-        String url = TMDB_BASE + endpoint 
-            + "?api_key=" + tmdbApiKey 
-            + "&language=es-ES&region=ES&page=1" 
-            + params;
-
-        try {
-            // Paso 1: Hacer la petición HTTP
-            String response = webClient.get()
-                .uri(url)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block(); // .block() espera a que termine
-
-            // Paso 2: Convertir JSON a Map
-            Map<String, Object> data = parseJson(response);
-            List<Map<String, Object>> results = (List<Map<String, Object>>) data.get("results");
-
-            // Paso 3 y 4: Filtrar y devolver
-            return results != null ? results.stream()
-                .filter(movie -> {
-                    String lang = (String) movie.get("original_language");
-                    return lang != null && (lang.equals("en") || lang.equals("es"));
-                })
-                .limit(20) // Máximo 20 películas
-                .toList() 
-                : new ArrayList<>();
-
-        } catch (Exception e) {
-            System.err.println("Error fetching from TMDB: " + e.getMessage());
-            return new ArrayList<>();
-        }
+        return fetchFromTMDB(endpoint, params, true);
     }
 
     /**
-     * Construye los parámetros para el endpoint /discover/movie
+     * Método genérico para hacer peticiones a TMDB
      * 
-     * ¿QUÉ HACE?
-     * - Recibe un mapa con filtros (género, año, duración, etc)
-     * - Convierte esos filtros a formato de URL (?with_genres=28,35&...)
+     * @param useRegion Si es true, añade region=ES (para estrenos locales)
+     */
+    private List<Map<String, Object>> fetchFromTMDB(String endpoint, String params, boolean useRegion) {
+    String regionParam = useRegion ? "&region=ES" : "";
+    String url = TMDB_BASE + endpoint 
+        + "?api_key=" + tmdbApiKey 
+        + "&language=es-ES" + regionParam
+        + params;
+
+    try {
+        String response = webClient.get()
+            .uri(url)
+            .retrieve()
+            .bodyToMono(String.class)
+            .block();
+
+        Map<String, Object> data = parseJson(response);
+        
+        // Obtenemos los resultados del JSON
+        List<Map<String, Object>> results = (List<Map<String, Object>>) data.get("results");
+
+        // Si hay resultados, los devolvemos directamente sin filtrar por idioma
+        return results != null ? results : new ArrayList<>();
+
+    } catch (Exception e) {
+        System.err.println("Error fetching from TMDB: " + e.getMessage());
+        return new ArrayList<>();
+    }
+}
+
+    /**
+     * Construye los parámetros para el endpoint /discover/movie
      */
     private String buildDiscoverParams(Map<String, Object> filtros) {
         StringBuilder params = new StringBuilder();
 
-        // Filtro por géneros (ej: 28,35 = acción y comedia)
-        if (filtros.get("generos") != null) {
-            params.append("&with_genres=")
-                .append(String.join(",", (List<String>) filtros.get("generos")));
+        // Filtro de calidad por defecto: mínimo 50 votos (si no se especifica o llega vacío)
+        Object votosMin = filtros.get("votosMin");
+        if (votosMin == null || votosMin.toString().isEmpty()) {
+            params.append("&vote_count.gte=50");
+        } else {
+            params.append("&vote_count.gte=").append(votosMin);
+        }
+
+        // Filtro por géneros (puede ser Lista o String separado por comas)
+        Object generos = filtros.get("generos");
+        if (generos != null && !generos.toString().isEmpty()) {
+            if (generos instanceof List) {
+                List<?> list = (List<?>) generos;
+                if (!list.isEmpty()) {
+                    params.append("&with_genres=").append(String.join(",", list.stream().map(Object::toString).toList()));
+                }
+            } else {
+                params.append("&with_genres=").append(generos.toString());
+            }
         }
 
         // Filtro por año mínimo
-        if (filtros.get("anioMin") != null) {
-            params.append("&primary_release_date.gte=")
-                .append(filtros.get("anioMin")).append("-01-01");
+        if (filtros.get("anioMin") != null && !filtros.get("anioMin").toString().isEmpty()) {
+            params.append("&primary_release_date.gte=").append(filtros.get("anioMin")).append("-01-01");
         }
 
         // Filtro por año máximo
-        if (filtros.get("anioMax") != null) {
-            params.append("&primary_release_date.lte=")
-                .append(filtros.get("anioMax")).append("-12-31");
+        if (filtros.get("anioMax") != null && !filtros.get("anioMax").toString().isEmpty()) {
+            params.append("&primary_release_date.lte=").append(filtros.get("anioMax")).append("-12-31");
         }
 
-        // Filtro por duración máxima (en minutos)
-        if (filtros.get("duracionMax") != null) {
+        // Filtro por duración máxima
+        if (filtros.get("duracionMax") != null && !filtros.get("duracionMax").toString().isEmpty()) {
             params.append("&with_runtime.lte=").append(filtros.get("duracionMax"));
         }
 
-        // Filtro por puntuación mínima (0-10)
-        if (filtros.get("puntuacionMin") != null) {
+        // Filtro por puntuación mínima
+        if (filtros.get("puntuacionMin") != null && !filtros.get("puntuacionMin").toString().isEmpty()) {
             params.append("&vote_average.gte=").append(filtros.get("puntuacionMin"));
         }
 
-        // Filtro por cantidad mínima de votos
-        if (filtros.get("votosMin") != null) {
-            params.append("&vote_count.gte=").append(filtros.get("votosMin"));
+        // Filtro por plataforma (Watch Providers)
+        if (filtros.get("plataforma") != null && !filtros.get("plataforma").toString().isEmpty()) {
+            params.append("&with_watch_providers=").append(filtros.get("plataforma"))
+            .append("&watch_region=ES");
         }
 
-        // Filtro por idioma original (ej: "es", "en")
-        if (filtros.get("idiomaOriginal") != null) {
+        // Otros filtros
+        if (filtros.get("idiomaOriginal") != null && !filtros.get("idiomaOriginal").toString().isEmpty()) {
             params.append("&with_original_language=").append(filtros.get("idiomaOriginal"));
         }
 
-        // Filtro para incluir o no películas para adultos
-        boolean incluirAdultos = (boolean) filtros.getOrDefault("incluirAdultos", false);
+        boolean incluirAdultos = Boolean.parseBoolean(String.valueOf(filtros.getOrDefault("incluirAdultos", false)));
         params.append("&include_adult=").append(incluirAdultos);
-
-        // Filtro por plataforma de streaming (ej: Netflix = 8)
-        if (filtros.get("plataforma") != null) {
-            params.append("&with_watch_providers=").append(filtros.get("plataforma"))
-                .append("&watch_region=ES");
-        }
 
         return params.toString();
     }

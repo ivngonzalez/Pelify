@@ -7,10 +7,10 @@ const BuscadorPeliculas = () => {
   const navigate = useNavigate();
   const [filtros, setFiltros] = useState({
     generos: [],
-    duracionMax: '120',
+    duracionMax: '240',
     anioMin: '',
     anioMax: '',
-    puntuacionMin: '6',
+    puntuacionMin: '5',
     votosMin: '',
     plataforma: '' // New state for platform
   });
@@ -142,11 +142,11 @@ const BuscadorPeliculas = () => {
               <input
                 type="number"
                 name="anioMin"
-                className="buscador-input" // Assuming a class for number inputs, adjust if needed
+                className="buscador-input" 
                 value={filtros.anioMin}
                 onChange={handleChange}
-                min="1800" // Example min year
-                max={new Date().getFullYear().toString()} // Max year is current year
+                min="1800" 
+                max={new Date().getFullYear().toString()} 
                 placeholder="Ej: 1990"
               />
             </Col>
