@@ -21,10 +21,13 @@ import org.springframework.security.web.context.SecurityContextRepository;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired private AuthenticationManager authManager;
     @Autowired private UserService userService;
     @Autowired private UserRepository userRepository;
+    
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) { 
         try {
@@ -40,22 +43,32 @@ public class AuthController {
             return ResponseEntity.internalServerError().body("Error inesperado en el servidor");
         }
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req, HttpServletRequest request, HttpServletResponse response) {
         try {
+            // 1. Autenticar con Spring Security
             Authentication auth = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
             );
 
             SecurityContextHolder.getContext().setAuthentication(auth);
-
+            
+            // 2. Guardar el contexto en la sesión para que persista
             securityContextRepository.saveContext(SecurityContextHolder.getContext(), request, response);
+
+            // 3. CAMBIO CLAVE: Guardar el objeto User completo en la sesión para usarlo en "Mi Lista"
+            User user = userRepository.findByEmail(req.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            
+            request.getSession().setAttribute("usuarioLogueado", user);
 
             return ResponseEntity.ok("Login exitoso");
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
     }
+
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -64,12 +77,14 @@ public class AuthController {
         }
         return ResponseEntity.ok("Sesión cerrada");
     }
+
     @GetMapping("/me")
     public ResponseEntity<?> getMe(Authentication auth) {
         if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
             return ResponseEntity.noContent().build();
         }
 
+        // Buscamos por email (que es el "name" en el token de autenticación)
         return userRepository.findByEmail(auth.getName())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(404).build());

@@ -1,15 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, ocultarBotonLista = false }) => {
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, ocultarBotonLista = false }) => {
   const [peliculas, setPeliculas] = useState(initialMovies || []);
   const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction);
   const scrollRef = useRef(null);
-  const navigate = useNavigate();
+
+  // --- NUEVA FUNCIÓN PARA AÑADIR A FAVORITOS ---
+  const agregarAMiLista = async (pelicula) => {
+    try {
+      // Nota: Enviamos el objeto película completo o el ID según pida tu Backend
+      // Usamos credentials: 'include' para enviar la cookie JSESSIONID de Java
+      const response = await fetch(`http://localhost:8080/api/favoritos/agregar/${pelicula.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include' 
+      });
+
+      if (response.ok) {
+        alert(`"${pelicula.title}" se añadió a tu lista`);
+      } else if (response.status === 401) {
+        alert("Debes iniciar sesión para guardar favoritos");
+      } else {
+        alert("Error al añadir a la lista");
+      }
+    } catch (err) {
+      console.error("Error de conexión:", err);
+      alert("No se pudo conectar con el servidor");
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -28,7 +53,6 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, 
       };
       fetchData();
     }
-
     return () => { active = false; };
   }, [fetchFunction, initialMovies, peliculas.length]);
 
@@ -40,92 +64,76 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, 
     }
   };
 
-  const handleAddToList = (e, pelicula) => {
-    e.preventDefault();
-    if (!user) {
-      navigate('/perfil');
-    } else {
-      console.log("Añadiendo a la lista de:", user.username, pelicula.title);
-      alert(`"${pelicula.title}" se añadirá a tu lista pronto.`);
-    }
-  };
-
   if (cargando) return (
-      <section className="tarjetas-seccion">
-        <Container fluid>
-          <p className="tarjetas-label">{titulo || 'Sugerencias para ti'}</p>
-          <p className="tarjetas-cargando">Cargando películas...</p>
-        </Container>
-      </section>
+    <section className="tarjetas-seccion">
+      <Container fluid>
+        <p className="tarjetas-label">{titulo || 'Sugerencias para ti'}</p>
+        <p className="tarjetas-cargando">Cargando películas...</p>
+      </Container>
+    </section>
   );
 
   if (peliculas.length === 0) return null;
 
   return (
-      <section className="tarjetas-seccion">
-        <Container fluid className="position-relative slider-wrapper">
-          <p className="tarjetas-label">{titulo}</p>
+    <section className="tarjetas-seccion">
+      <Container fluid className="position-relative slider-wrapper">
+        <p className="tarjetas-label">{titulo}</p>
 
-          <button className="slider-control left" onClick={() => scroll('left')} aria-label="Desplazar">
-            <ChevronLeft size={24} />
-          </button>
+        <button className="slider-control left" onClick={() => scroll('left')} aria-label="Desplazar a la izquierda">
+          <ChevronLeft size={24} />
+        </button>
 
-          <div className="tarjetas-container-horizontal" ref={scrollRef}>
-            {peliculas.map(pelicula => (
-                <div key={pelicula.id} className="tarjeta-wrapper">
-                  <div className="tarjeta">
-                    <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-link">
-                      <div className="tarjeta-imagen">
-                        {pelicula.poster_path ? (
-                            <img
-                                src={
-                                  pelicula.poster_path.startsWith('http')
-                                      ? pelicula.poster_path
-                                      : `${TMDB_IMG.replace(/\/$/, '')}/${pelicula.poster_path.replace(/^\//, '')}`
-                                }
-                                alt={pelicula.title}
-                                className="tarjeta-poster"
-                                onError={(e) => {
-                                  e.target.onerror = null;
-                                  e.target.src = 'https://via.placeholder.com/500x750?text=Sin+Imagen';
-                                }}
-                            />
-                        ) : (
-                            <div className="tarjeta-sin-imagen" />
-                        )}
-                        <span className="tarjeta-score">
-                      ★ {pelicula.vote_average?.toFixed(1) || '0.0'}
-                    </span>
-                      </div>
-                    </Link>
-
-                    <div className="tarjeta-info">
-                      <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-titulo-link">
-                        <p className="tarjeta-titulo">{pelicula.title}</p>
-                      </Link>
-                      <p className="tarjeta-meta">
-                        {pelicula.genre_ids?.length > 0 ? 'Cine' : 'Película'} · {pelicula.release_date?.slice(0, 4) || 's/f'}
-                      </p>
-
-                      {!ocultarBotonLista && (
-                          <button
-                              className="tarjeta-boton"
-                              onClick={(e) => handleAddToList(e, pelicula)}
-                          >
-                            + Mi lista
-                          </button>
-                      )}
-                    </div>
+        <div className="tarjetas-container-horizontal" ref={scrollRef}>
+          {peliculas.map(pelicula => (
+            <div key={pelicula.id} className="tarjeta-wrapper">
+              <div className="tarjeta">
+                <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-link">
+                  <div className="tarjeta-imagen">
+                    {pelicula.poster_path
+                      ? <img
+                          src={pelicula.poster_path.startsWith('http') 
+                            ? pelicula.poster_path 
+                            : `${TMDB_IMG.replace(/\/$/, '')}/${pelicula.poster_path.replace(/^\//, '')}`}
+                          alt={pelicula.title}
+                          className="tarjeta-poster"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://via.placeholder.com/500x750?text=No+Image';
+                          }}
+                        />
+                      : <div className="tarjeta-sin-imagen"/>
+                    }
+                    <span className="tarjeta-score">★ {pelicula.vote_average?.toFixed(1) || '0.0'}</span>
                   </div>
-                </div>
-            ))}
-          </div>
+                </Link>
+                <div className="tarjeta-info">
+                  <Link to={`/pelicula/${pelicula.id}`} className="tarjeta-titulo-link">
+                    <p className="tarjeta-titulo">{pelicula.title}</p>
+                  </Link>
+                  <p className="tarjeta-meta">
+                    {pelicula.genre_ids && pelicula.genre_ids.length > 0 ? 'Cine' : 'Película'} · {pelicula.release_date?.slice(0, 4)}
+                  </p>
 
-          <button className="slider-control right" onClick={() => scroll('right')} aria-label="Desplazar">
-            <ChevronRight size={24} />
-          </button>
-        </Container>
-      </section>
+                  {!ocultarBotonLista && (
+                    <button 
+                      className="tarjeta-boton"
+                      onClick={() => agregarAMiLista(pelicula)} // LLAMADA A LA FUNCIÓN
+                    >
+                      + Mi lista
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button className="slider-control right" onClick={() => scroll('right')} aria-label="Desplazar a la derecha">
+          <ChevronRight size={24} />
+        </button>
+      </Container>
+    </section>
   );
 };
 
