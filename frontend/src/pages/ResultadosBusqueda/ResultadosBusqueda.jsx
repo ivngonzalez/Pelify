@@ -7,7 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 
 import './ResultadosBusqueda.css';
 
-const ResultadosBusqueda = () => {
+const ResultadosBusqueda = ({ user }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [title, setTitle] = useState("Resultados de Búsqueda");
@@ -182,7 +182,7 @@ const ResultadosBusqueda = () => {
                 )}
 
                 {movies.length > 0 ? (
-                    <TarjetasPelicula movies={movies} />
+                    <TarjetasPelicula movies={movies} user={user} />
                 ) : (
                     <p>No se encontraron películas con los filtros seleccionados.</p>
                 )}

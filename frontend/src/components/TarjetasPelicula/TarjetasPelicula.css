@@ -1,6 +1,6 @@
 .slider-wrapper {
     position: relative;
-    padding: 0 40px !important; /* Spacing for buttons */
+    padding: 0 40px !important;
 }
 
 .slider-control {
@@ -64,7 +64,6 @@
     gap: 20px;
     padding: 10px 0 25px;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
 }
 
 /* Hide scrollbar */
@@ -78,7 +77,8 @@
 }
 
 .tarjeta-wrapper {
-    flex: 0 0 220px;
+    flex: 0 0 200px; /* FIXED WIDTH FOR WRAPPER */
+    width: 200px;
 }
 
 .tarjeta {
@@ -87,6 +87,8 @@
     border-radius: 8px;
     overflow: hidden;
     height: 100%;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
@@ -98,8 +100,10 @@
 
 .tarjeta-imagen {
     position: relative;
-    height: 310px;
+    width: 100%;
+    aspect-ratio: 2 / 3; /* FORCE 2:3 ASPECT RATIO */
     overflow: hidden;
+    background-color: #4D5061;
 }
 
 .tarjeta-poster {
@@ -134,6 +138,9 @@
 
 .tarjeta-info {
     padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .tarjeta-link, .tarjeta-titulo-link {
@@ -145,7 +152,7 @@
     font-size: 13px;
     font-weight: 500;
     color: var(--texto);
-    margin-bottom: 3px;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -159,7 +166,7 @@
 .tarjeta-meta {
     font-size: 11px;
     color: var(--texto-secundario);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .tarjeta-boton {
@@ -171,12 +178,37 @@
     font-size: 11px;
     padding: 6px;
     cursor: pointer;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
 .tarjeta-boton:hover {
     border-color: var(--acento);
     color: var(--acento);
+}
+
+/* LIST SELECTOR DROPDOWN */
+.selector-lista-menu {
+    background-color: var(--fondo-claro) !important;
+    border: 1px solid #3a3d47 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    min-width: 180px;
+    z-index: 1050;
+}
+
+.selector-lista-menu .dropdown-item {
+    color: var(--texto-secundario) !important;
+    padding: 8px 15px;
+    font-size: 12px;
+}
+
+.selector-lista-menu .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: var(--acento) !important;
+}
+
+.selector-lista-menu .dropdown-divider {
+    border-top: 1px solid #3a3d47;
 }
 
 @media (max-width: 768px) {
@@ -187,9 +219,7 @@
         display: none; 
     }
     .tarjeta-wrapper {
-        flex: 0 0 170px;
-    }
-    .tarjeta-imagen {
-        height: 250px;
+        flex: 0 0 160px;
+        width: 160px;
     }
 }

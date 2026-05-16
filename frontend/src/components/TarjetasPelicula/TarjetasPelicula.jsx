@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
+import SelectorLista from './SelectorLista';
 import './TarjetasPelicula.css';
 
 const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, ocultarBotonLista = false }) => {
@@ -108,12 +109,16 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, 
                       </p>
 
                       {!ocultarBotonLista && (
+                        user ? (
+                          <SelectorLista pelicula={pelicula} />
+                        ) : (
                           <button
                               className="tarjeta-boton"
                               onClick={(e) => handleAddToList(e, pelicula)}
                           >
                             + Mi lista
                           </button>
+                        )
                       )}
                     </div>
                   </div>

@@ -51,7 +51,7 @@ function App() {
           <Route path="/pelicula/:id" element={<DetallesPelicula />} />
 
           {/* VISTA DE RESULTADOS DE BÚSQUEDA */}
-          <Route path="/resultados-busqueda" element={<ResultadosBusqueda />} />
+          <Route path="/resultados-busqueda" element={<ResultadosBusqueda user={user} />} />
 
           {/* RUTA DE PERFIL DE USUARIO */}
           <Route
@@ -66,7 +66,10 @@ function App() {
           <Route path="/registro" element={<Registro />} />
 
             {/* VISTA DE MI LISTA */}
-            <Route path="/mi-lista" element={<MiLista />} />
+            <Route 
+              path="/mi-lista" 
+              element={user ? <MiLista user={user} /> : <Navigate to="/login" />} 
+            />
         </Routes>
       </main>
 

@@ -16,15 +16,23 @@ public class Pelicula {
     @Column(name = "ruta_poster")
     private String rutaPoster;
 
+    @Column(name = "puntuacion")
+    private Double voteAverage;
+
+    @Column(name = "fecha_lanzamiento")
+    private String releaseDate;
+
     // Constructor vacío obligatorio para JPA
     public Pelicula() {
     }
 
     // Constructor útil para crear películas manualmente
-    public Pelicula(Integer tmdbId, String titulo, String rutaPoster) {
+    public Pelicula(Integer tmdbId, String titulo, String rutaPoster, Double voteAverage, String releaseDate) {
         this.tmdbId = tmdbId;
         this.titulo = titulo;
         this.rutaPoster = rutaPoster;
+        this.voteAverage = voteAverage;
+        this.releaseDate = releaseDate;
     }
 
     // --- GETTERS Y SETTERS ---
@@ -51,5 +59,21 @@ public class Pelicula {
 
     public void setRutaPoster(String rutaPoster) {
         this.rutaPoster = rutaPoster;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 }

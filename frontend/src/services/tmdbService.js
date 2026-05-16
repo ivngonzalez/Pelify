@@ -4,9 +4,6 @@ import api from '../api'; // Cliente axios que ya configurado para el backend
 export const TMDB_IMG = 'https://image.tmdb.org/t/p/w500';
 
 /**
- * Ahora todas las peticiones van al BACKEND
- * NO al frontend. Esto es mucho más seguro.
- * 
  * Ejemplo de flujo:
  * 1. Frontend llama → api.get('/tmdb/populares')
  * 2. Backend recibe → /api/tmdb/populares
@@ -50,12 +47,12 @@ export const getPeliculaDetalle = (id) =>
  */
 export const searchMovies = async (queryOrFilters) => {
     if (typeof queryOrFilters === 'string') {
-        // Caso 1: Búsqueda por nombre
+        // Búsqueda por nombre
         // GET /api/tmdb/buscar?q=Avengers
         return api.get('/tmdb/buscar', { params: { q: queryOrFilters } })
             .then(res => res.data);
     } else if (typeof queryOrFilters === 'object' && queryOrFilters !== null) {
-        // Caso 2: Descubrir con filtros
+        // Descubrir con filtros
         // POST /api/tmdb/descubrir
         // Body: { generos: ["28"], anioMin: 2020, ... }
         return api.post('/tmdb/descubrir', queryOrFilters)

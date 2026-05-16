@@ -12,7 +12,7 @@ const BuscadorPeliculas = () => {
     anioMax: '',
     puntuacionMin: '5',
     votosMin: '',
-    plataforma: '' // New state for platform
+    plataforma: ''
   });
 
   const genreMap = {
@@ -40,10 +40,9 @@ const BuscadorPeliculas = () => {
   const platformOptions = [
     { value: '', label: 'Cualquiera' },
     { value: '8', label: 'Netflix' },
-    { value: '3', label: 'HBO Max' },
-    { value: '37', label: 'Disney+' },
     { value: '119', label: 'Amazon Prime Video' },
-    { value: '40', label: 'Apple TV+' }
+    { value: '337', label: 'Disney+' },
+    { value: '2', label: 'Apple TV+' },
   ];
 
   const toggleGenero = (genero) => {
@@ -101,7 +100,7 @@ const BuscadorPeliculas = () => {
       queryParams.append('votosMin', filtros.votosMin);
     }
 
-    if (filtros.plataforma) { // Append platform filter if selected
+    if (filtros.plataforma) { 
       queryParams.append('plataforma', filtros.plataforma);
     }
 
