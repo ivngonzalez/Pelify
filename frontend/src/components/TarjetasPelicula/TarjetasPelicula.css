@@ -101,7 +101,7 @@
 .tarjeta-imagen {
     position: relative;
     width: 100%;
-    aspect-ratio: 2 / 3; /* FORCE 2:3 ASPECT RATIO */
+    aspect-ratio: 2 / 3;
     overflow: hidden;
     background-color: #4D5061;
 }
@@ -187,7 +187,25 @@
     color: var(--acento);
 }
 
-/* LIST SELECTOR DROPDOWN */
+.boton-eliminar-peli {
+    background: transparent;
+    border: none;
+    color: var(--texto-secundario);
+    padding: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.6;
+}
+
+.boton-eliminar-peli:hover {
+    color: #ff4d4d;
+    opacity: 1;
+    transform: scale(1.1);
+}
+
 .selector-lista-menu {
     background-color: var(--fondo-claro) !important;
     border: 1px solid #3a3d47 !important;

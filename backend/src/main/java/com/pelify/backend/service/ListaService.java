@@ -40,6 +40,14 @@ public class ListaService {
             throw new RuntimeException("No tienes permiso para modificar esta lista");
         }
 
+        // Verificar si la película ya está en la lista (basado en tmdbId)
+        boolean yaExiste = lista.getPeliculas().stream()
+                .anyMatch(p -> p.getTmdbId().equals(pelicula.getTmdbId()));
+        
+        if (yaExiste) {
+            throw new RuntimeException("La película ya está en esta lista");
+        }
+
         // Asegurarse de que la película existe y está actualizada en la BD local
         peliculaRepository.save(pelicula);
 
@@ -66,6 +74,10 @@ public class ListaService {
 
         if (!lista.getUsuario().getId().equals(usuario.getId())) {
             throw new RuntimeException("No tienes permiso para eliminar esta lista");
+        }
+
+        if (lista.isEsPredeterminada()) {
+            throw new RuntimeException("No se puede eliminar la lista predeterminada");
         }
 
         listaRepository.delete(lista);

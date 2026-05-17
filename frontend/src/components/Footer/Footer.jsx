@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import './Footer.css';
 
@@ -8,7 +8,7 @@ const Footer = () => {
       <Container fluid>
         <Row>
           <Col xs={12} lg={4} className="footer-columna mb-4 mb-lg-0">
-            <a href="/" className="footer-logo">Pelify</a>
+            <Link to="/" className="footer-logo">Pelify</Link>
             <p className="footer-eslogan">
               Descubre y comparte tus películas favoritas.
             </p>
@@ -16,15 +16,14 @@ const Footer = () => {
 
           <Col xs={6} lg={2} className="footer-columna">
             <div className="footer-titulo-seccion">Navegación</div>
-            <a href="/" className="footer-enlace">Inicio</a>
-            <a href="#mi-lista" className="footer-enlace">Mi lista</a>
+            <Link to="/" className="footer-enlace">Inicio</Link>
+            <Link to="/mi-lista" className="footer-enlace">Mi lista</Link>
           </Col>
 
           <Col xs={6} lg={2} className="footer-columna">
             <div className="footer-titulo-seccion">Cuenta</div>
-            <a href="#perfil" className="footer-enlace">Mi perfil</a>
-            <a href="#historial" className="footer-enlace">Historial</a>
-            <a href="#watchlist" className="footer-enlace">Watchlist</a>
+            <Link to="/perfil" className="footer-enlace">Mi perfil</Link>
+            <Link to="/mi-lista" className="footer-enlace">Watchlist</Link>
           </Col>
 
           <Col xs={6} lg={2} className="footer-columna">

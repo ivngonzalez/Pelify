@@ -48,7 +48,7 @@ function App() {
           <Route path="/" element={<Home user={user} />} />
 
           {/* VISTA DE DETALLE DE PELÍCULA */}
-          <Route path="/pelicula/:id" element={<DetallesPelicula />} />
+          <Route path="/pelicula/:id" element={<DetallesPelicula user={user} />} />
 
           {/* VISTA DE RESULTADOS DE BÚSQUEDA */}
           <Route path="/resultados-busqueda" element={<ResultadosBusqueda user={user} />} />

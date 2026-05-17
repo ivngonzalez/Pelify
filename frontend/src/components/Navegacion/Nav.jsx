@@ -19,7 +19,7 @@ const Navegacion = ({ user }) => {
   };
 
   return (
-    <Navbar expand="lg" className="nav-principal">
+    <Navbar expand="lg" className="nav-principal" sticky="top">
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className="nav-logo d-flex align-items-center">
           <img src={logo} alt="Pelify Logo" width="40" height="40" className="d-inline-block" />
@@ -41,7 +41,6 @@ const Navegacion = ({ user }) => {
           </InputGroup>
         </div>
 
-        {/* --- AVATAR MÓVIL --- */}
         <div className="d-flex align-items-center d-lg-none">
           <Link to={user ? "/perfil" : "/login"} className="nav-avatar me-2 text-decoration-none text-white d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: user ? '#e50914' : '#333' }}>
             {user ? (
@@ -71,7 +70,7 @@ const Navegacion = ({ user }) => {
             </div>
 
             <Nav.Link as={Link} to="/" className="nav-enlace">Inicio</Nav.Link>
-            <Nav.Link as={Link} to={user ? "/mi-lista" : "/login"} className="nav-enlace">Mi lista</Nav.Link>
+            <Nav.Link as={Link} to={user ? "/mi-lista" : "/login"} className="nav-enlace">Mis listas</Nav.Link>
 
             <Link
               to={user ? "/perfil" : "/login"}
@@ -85,10 +84,8 @@ const Navegacion = ({ user }) => {
               }}
             >
               {user ? (
-                // Si está logueado, inicial en mayúscula
                 <span className="fw-bold">{user.username?.charAt(0).toUpperCase()}</span>
               ) : (
-                // Si no, icono de usuario normal
                 <FontAwesomeIcon icon={faUser} />
               )}
             </Link>

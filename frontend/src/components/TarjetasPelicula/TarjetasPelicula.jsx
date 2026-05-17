@@ -1,16 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Container } from 'react-bootstrap';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TMDB_IMG } from '../../services/tmdbService';
 import SelectorLista from './SelectorLista';
 import './TarjetasPelicula.css';
 
-const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, ocultarBotonLista = false }) => {
+const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, ocultarBotonLista = false, onRemove }) => {
   const [peliculas, setPeliculas] = useState(initialMovies || []);
   const [cargando, setCargando] = useState(!initialMovies && !!fetchFunction);
   const scrollRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (initialMovies) {
+      setPeliculas(initialMovies);
+    }
+  }, [initialMovies]);
 
   useEffect(() => {
     let active = true;
@@ -119,6 +125,18 @@ const TarjetasPelicula = ({ titulo, fetchFunction, movies: initialMovies, user, 
                             + Mi lista
                           </button>
                         )
+                      )}
+
+                      {onRemove && (
+                        <div className="d-flex justify-content-end mt-2">
+                          <button 
+                            className="boton-eliminar-peli" 
+                            onClick={() => onRemove(pelicula.id)}
+                            title="Eliminar de la lista"
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       )}
                     </div>
                   </div>

@@ -4,9 +4,10 @@ import { Badge, Modal, Spinner } from 'react-bootstrap';
 import { getPeliculaDetalle, TMDB_IMG } from '../../services/tmdbService';
 import './DetallesPelicula.css';
 import './ModalStyles.css';
-import { Play, Plus, ArrowLeft, Star, Clock, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, ArrowLeft, Star, Clock, Calendar, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import SelectorLista from '../../components/TarjetasPelicula/SelectorLista';
 
-const DetallesPelicula = () => {
+const DetallesPelicula = ({ user }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [pelicula, setPelicula] = useState(null);
@@ -128,7 +129,16 @@ const DetallesPelicula = () => {
                                         <Play size={15} fill="currentColor" /> VER TRÁILER
                                     </button>
                                 )}
-                                <button className="btn-mi-lista"><Plus size={15} /> MI LISTA</button>
+                                
+                                {user ? (
+                                    <div className="detalles-selector-container">
+                                        <SelectorLista pelicula={pelicula} />
+                                    </div>
+                                ) : (
+                                    <button className="btn-mi-lista" onClick={() => navigate('/login')}>
+                                        <Plus size={15} /> MI LISTA
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>

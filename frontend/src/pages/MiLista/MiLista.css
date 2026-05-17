@@ -1,5 +1,6 @@
 .mi-lista-page {
     background-color: var(--fondo);
+    color: var(--texto) !important;
     min-height: 100vh;
 }
 
@@ -7,8 +8,13 @@
     color: var(--acento);
 }
 
-.border-dashed {
-    border-style: dashed !important;
+.mi-lista-page .text-muted {
+    color: var(--texto) !important;
+    opacity: 0.6;
+}
+
+.mi-lista-page .border-secondary {
+    border-color: #4D5061 !important;
 }
 
 /* Modal styles compatible with the original theme */

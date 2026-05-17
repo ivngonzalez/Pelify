@@ -13,6 +13,7 @@ public class UserService {
     @Autowired private UserRepository userRepository;
     @Autowired private RoleRepository roleRepository;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private ListaRepository listaRepository;
 
     public User registrarUsuario(User user) {
         if(userRepository.existsByEmail(user.getEmail())) throw new RuntimeException("Email en uso");
@@ -22,7 +23,13 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Error: Rol no inicializado en DB"));
 
         user.getRoles().add(defaultRole);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Crear lista "Watchlist" por defecto
+        Lista watchlist = new Lista("Watchlist", savedUser, true);
+        listaRepository.save(watchlist);
+
+        return savedUser;
     }
 
     // --- AÑADE ESTE MÉTODO PARA QUE EL USERCONTROLLER NO DÉ ERROR ---

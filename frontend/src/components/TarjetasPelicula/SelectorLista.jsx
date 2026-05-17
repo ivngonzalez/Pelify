@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Dropdown, Spinner } from 'react-bootstrap';
-import { Plus } from 'lucide-react';
+import { Plus, Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import listaService from '../../services/listaService';
 
 const SelectorLista = ({ pelicula, onSelect }) => {
@@ -20,7 +21,7 @@ const SelectorLista = ({ pelicula, onSelect }) => {
         }
     };
 
-    const handleAgregarALista = async (listaId, listaNombre) => {
+    const handleAgregarALista = async (listaId) => {
         try {
             await listaService.agregarPelicula(listaId, pelicula);
             setMensaje(`¡Añadida!`);
@@ -28,8 +29,16 @@ const SelectorLista = ({ pelicula, onSelect }) => {
             if (onSelect) onSelect();
         } catch (error) {
             console.error("Error al añadir película:", error);
-            alert("Error al añadir la película a la lista");
+            if (error.response?.data?.includes("ya está en esta lista")) {
+                alert("Esta película ya está en la lista");
+            } else {
+                alert("Error al añadir la película a la lista");
+            }
         }
+    };
+
+    const estaEnLista = (lista) => {
+        return lista.peliculas.some(p => p.tmdbId === pelicula.id);
     };
 
     return (
@@ -50,17 +59,23 @@ const SelectorLista = ({ pelicula, onSelect }) => {
                 ) : listas.length === 0 ? (
                     <Dropdown.Item disabled>No tienes listas creadas</Dropdown.Item>
                 ) : (
-                    listas.map(lista => (
-                        <Dropdown.Item 
-                            key={lista.id} 
-                            onClick={() => handleAgregarALista(lista.id, lista.nombre)}
-                        >
-                            {lista.nombre}
-                        </Dropdown.Item>
-                    ))
+                    listas.map(lista => {
+                        const yaAñadida = estaEnLista(lista);
+                        return (
+                            <Dropdown.Item 
+                                key={lista.id} 
+                                onClick={() => !yaAñadida && handleAgregarALista(lista.id, lista.nombre)}
+                                className={yaAñadida ? "text-muted d-flex justify-content-between align-items-center" : "d-flex justify-content-between align-items-center"}
+                                disabled={yaAñadida}
+                            >
+                                {lista.nombre}
+                                {yaAñadida && <Check size={14} className="text-acento" />}
+                            </Dropdown.Item>
+                        );
+                    })
                 )}
                 <Dropdown.Divider />
-                <Dropdown.Item href="/mi-lista" className="text-acento d-flex align-items-center gap-2">
+                <Dropdown.Item as={Link} to="/mi-lista" className="text-acento d-flex align-items-center gap-2">
                     <Plus size={16} /> Gestionar listas
                 </Dropdown.Item>
             </Dropdown.Menu>

@@ -16,6 +16,9 @@ public class Lista {
     @Column(nullable = false)
     private String nombre;
 
+    @Column(name = "es_predeterminada")
+    private boolean esPredeterminada = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private User usuario;
@@ -38,11 +41,19 @@ public class Lista {
         this.usuario = usuario;
     }
 
+    public Lista(String nombre, User usuario, boolean esPredeterminada) {
+        this.nombre = nombre;
+        this.usuario = usuario;
+        this.esPredeterminada = esPredeterminada;
+    }
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
+    public boolean isEsPredeterminada() { return esPredeterminada; }
+    public void setEsPredeterminada(boolean esPredeterminada) { this.esPredeterminada = esPredeterminada; }
     public User getUsuario() { return usuario; }
     public void setUsuario(User usuario) { this.usuario = usuario; }
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }

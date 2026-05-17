@@ -4,6 +4,9 @@
     padding: 40px 40px 12px;
     font-size: 13px;
     border-bottom: 1px solid var(--acento) !important;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .nav-principal .container-fluid {

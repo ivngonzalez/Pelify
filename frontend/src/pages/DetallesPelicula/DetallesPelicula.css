@@ -156,6 +156,35 @@
     color: var(--texto); 
 }
 
+/* SelectorLista in Detalles - Restored to match original btn-mi-lista */
+.detalles-selector-container {
+    display: flex;
+}
+
+.detalles-selector-container .tarjeta-boton {
+    background: transparent !important;
+    color: var(--texto) !important; 
+    border: 2px solid var(--texto) !important; 
+    padding: 12px 25px !important;
+    border-radius: 5px !important;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    width: auto !important;
+    min-width: 160px !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.detalles-selector-container .tarjeta-boton:hover {
+    background-color: color-mix(in srgb, var(--texto) 10%, transparent) !important;
+    border-color: var(--texto) !important;
+}
+
 .reparto-section {
     position: relative;
     z-index: 10;

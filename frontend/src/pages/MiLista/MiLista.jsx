@@ -50,7 +50,26 @@ const MiLista = ({ user }) => {
         }
     };
 
-    // Adaptar películas del backend al formato que espera TarjetasPelicula
+    const handleEliminarPelicula = async (listaId, peliculaId) => {
+        try {
+            await listaService.eliminarPelicula(listaId, peliculaId);
+            setListas(prevListas => 
+                prevListas.map(lista => {
+                    if (lista.id === listaId) {
+                        return {
+                            ...lista,
+                            peliculas: lista.peliculas.filter(p => p.tmdbId !== peliculaId)
+                        };
+                    }
+                    return lista;
+                })
+            );
+        } catch (error) {
+            console.error("Error al eliminar película de la lista:", error);
+            alert("No se pudo eliminar la película. Inténtalo de nuevo.");
+        }
+    };
+
     const adaptarPeliculas = (peliculas) => {
         return peliculas.map(p => ({
             id: p.tmdbId,
@@ -82,8 +101,7 @@ const MiLista = ({ user }) => {
 
                 {listas.length === 0 ? (
                     <div className="text-center text-muted my-5 py-5">
-                        <p className="h5">Aún no tienes listas personalizadas.</p>
-                        <p>¡Crea una para organizar tus películas favoritas!</p>
+                        <p className="h5">Aún no tienes listas.</p>
                     </div>
                 ) : (
                     <div className="listas-contenedor">
@@ -91,26 +109,29 @@ const MiLista = ({ user }) => {
                             <div key={lista.id} className="mb-5 pb-3">
                                 <div className="d-flex justify-content-between align-items-center mb-3 px-2">
                                     <h2 className="text-white h4 mb-0">{lista.nombre} <span className="text-muted h6 ms-2">({lista.peliculas.length})</span></h2>
-                                    <Button 
-                                        variant="outline-danger" 
-                                        size="sm"
-                                        onClick={() => handleEliminarLista(lista.id)}
-                                        className="d-flex align-items-center gap-1 opacity-75"
-                                        style={{ fontSize: '0.75rem' }}
-                                    >
-                                        <Trash2 size={14} /> Eliminar Lista
-                                    </Button>
+                                    {!lista.esPredeterminada && (
+                                        <Button 
+                                            variant="outline-danger" 
+                                            size="sm"
+                                            onClick={() => handleEliminarLista(lista.id)}
+                                            className="d-flex align-items-center gap-1 opacity-75"
+                                            style={{ fontSize: '0.75rem' }}
+                                        >
+                                            <Trash2 size={14} /> Eliminar Lista
+                                        </Button>
+                                    )}
                                 </div>
                                 
                                 {lista.peliculas.length > 0 ? (
                                     <TarjetasPelicula 
                                         movies={adaptarPeliculas(lista.peliculas)}
                                         ocultarBotonLista={true}
+                                        onRemove={(peliculaId) => handleEliminarPelicula(lista.id, peliculaId)}
                                     />
                                 ) : (
                                     <div className="px-2">
                                         <p className="text-muted small py-4 border border-secondary border-dashed text-center rounded">
-                                            Esta lista está vacía. Añade películas desde el buscador.
+                                            Esta lista está vacía.
                                         </p>
                                     </div>
                                 )}
@@ -120,7 +141,7 @@ const MiLista = ({ user }) => {
                 )}
             </Container>
 
-            {/* Modal para nueva lista */}
+            {/* Modal para crear lista */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered className="modal-pelify">
                 <Modal.Header closeButton>
                     <Modal.Title>Crear Nueva Lista</Modal.Title>
@@ -131,7 +152,6 @@ const MiLista = ({ user }) => {
                             <Form.Label>Nombre de la lista</Form.Label>
                             <Form.Control 
                                 type="text" 
-                                placeholder="Ej: Favoritas, Terror, Para ver..."
                                 value={nombreNuevaLista}
                                 onChange={(e) => setNombreNuevaLista(e.target.value)}
                                 autoFocus
